@@ -16,74 +16,95 @@ export interface SendMessageOptions {
 }
 
 const MOCK_REPLIES = [
-  `Here is a focused answer with some **key takeaways**:
+  `### HCP visit agenda (demo)
 
-1. Start with the smallest useful slice
-2. Validate assumptions early
-3. Keep the feedback loop short
+**Objectives**
+1. Confirm the clinical need in this specialty setting
+2. Align on **3 evidence-led messages**
+3. Agree a clear follow-up
 
-> Tip: Prefer *clarity* over clever wording when you draft the next prompt.
+**Key messages**
+- Mechanism and place in therapy (on-label framing only)
+- Practical dosing / monitoring considerations
+- What “good response” looks like in clinic
 
-You can also use \`Shift+Enter\` for a new line in the composer.`,
+> **Caveat:** Demo content only — confirm against approved PI / ISI before any live engagement.
 
-  `Absolutely — here is a practical pattern you can reuse:
-
-\`\`\`ts
-async function sendPrompt(prompt: string) {
-  const response = await fetch('/api/chat', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ prompt }),
-  })
-
-  if (!response.ok) {
-    throw new Error('Request failed')
-  }
-
-  return response.json()
-}
-\`\`\`
-
-**Why this works**
-
-- Keeps request shaping in one place
-- Surfaces failures early
-- Stays easy to test
-
-> “Make it work, make it right, make it fast.” — in that order.`,
-
-  `Good question. Here is a compact checklist:
-
-### Before you ship
-- [ ] Confirm the user goal in one sentence
-- [ ] Add one concrete example
-- [ ] Cover the unhappy path
-
-### Quick reference
-
-| Step | Action | Outcome |
+| Topic | HCP question | Suggested angle |
 | --- | --- | --- |
-| 1 | Clarify intent | Less rework |
-| 2 | Prototype | Faster learning |
-| 3 | Iterate | Better quality |
+| Efficacy | “Vs standard of care?” | Relative outcomes + study context |
+| Safety | “What should I watch?” | Monitoring + escalation path |
+| Access | “How do patients start?” | Support pathway overview |
 
-If something is still unclear, ask with **one** constraint at a time.`,
+**Next steps**
+- Leave a one-page evidence summary
+- Offer MSL follow-up for deep-dive questions`,
 
-  `Here is a short plan with markdown you can skim quickly:
+  `### Objection handling (science-first)
 
-#### Approach
-1. **Define** the success criteria
-2. **Draft** a thin vertical slice
-3. **Measure** with a real user path
+**Objection:** *“I already use the standard of care.”*
 
-\`\`\`bash
-npm run build
-npm run preview
+**Response frame**
+1. Acknowledge current practice
+2. Clarify the incremental clinical question
+3. Share **conservative** evidence points
+4. Invite questions without pressure
+
+\`\`\`md
+Acknowledge → Clarify need → Evidence → Invite dialogue
 \`\`\`
 
-> Note: Keep the first version intentionally small. Expansion is cheaper than recovery.
+**Talk track (short)**
+> “Many specialists start there. The discussion is less about replacing care and more about which patients still have unmet need — happy to walk through the data with that lens.”
 
-Need more detail on any step? Ask and I will expand that section only.`,
+**Do / Don’t**
+- **Do:** cite study populations and endpoints carefully
+- **Don’t:** overstate superiority or off-label use
+
+*Demo response — not approved promotional content.*`,
+
+  `### Patient-support script (plain language)
+
+Hi — thanks for speaking with us today. This call is to help you feel **confident and supported**, not to change your care plan.
+
+**What we can cover**
+- How to take your medicine as prescribed
+- What side effects are more common
+- When to contact your care team
+
+> If something feels urgent or severe, contact your clinician or emergency services right away.
+
+#### Simple titration reminder
+1. Follow the schedule your clinician gave you
+2. Use a daily reminder (phone alarm works well)
+3. Write down questions before your next visit
+
+**Supportive close**
+“You’re not alone in this. If anything is confusing, call us back — we’ll walk through it together.”
+
+*Educational demo only — not medical advice.*`,
+
+  `### Medical Affairs FAQ draft (MLR-minded)
+
+#### Q1. Where does this therapy fit?
+**Draft answer:** Position by approved indication and studied population. Avoid comparative claims unless supported by labeled / approved materials.
+
+#### Q2. What safety topics come up most?
+- Common adverse reactions (label-aligned)
+- Monitoring recommendations
+- When to escalate to PV / medical information
+
+> **Safety note:** Any suspected adverse event in a real workflow should follow your company’s AE reporting SOP.
+
+### Evidence snapshot
+
+| Domain | What to emphasize | Caution |
+| --- | --- | --- |
+| Efficacy | Primary endpoint + timeframe | Don’t extrapolate beyond study |
+| Safety | Frequency + management | Don’t minimize rare events |
+| Practical | Clinic workflow fit | Don’t invent access guarantees |
+
+Need this shorter, more patient-friendly, or rewritten as an HCP role-play? Use the follow-up chips below.`,
 ]
 
 function pickReply(userContent: string): string {

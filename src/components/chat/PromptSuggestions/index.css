@@ -1,0 +1,42 @@
+.prompt-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: var(--chat-max-width);
+  margin: 0 auto 0.75rem;
+}
+
+.prompt-suggestion-chip {
+  max-width: 100%;
+  padding: 0.55rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg-elevated);
+  color: var(--text);
+  text-align: left;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.prompt-suggestion-chip:hover {
+  border-color: var(--accent);
+  background: var(--bg-subtle);
+  color: var(--text-h);
+}
+
+.prompt-suggestion-chip--audio {
+  border-color: color-mix(in srgb, var(--audio-accent) 45%, var(--border));
+}
+
+.prompt-suggestion-chip--audio:hover {
+  border-color: var(--audio-accent);
+  background: color-mix(in srgb, var(--audio-accent) 10%, var(--bg-elevated));
+}
+
+.prompt-suggestion-title {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.3;
+}

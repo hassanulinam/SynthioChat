@@ -2,10 +2,15 @@ import type { FormEvent, KeyboardEvent } from 'react'
 import { useEffect, useRef } from 'react'
 import { observer } from 'mobx-react'
 
+import {
+  COMPOSER_PLACEHOLDER,
+  DEMO_COMPLIANCE_DISCLAIMER,
+} from '../../../constants/prompts'
 import { ErrorBanner } from '../../common/ErrorBanner'
 import { useChatStore, useVoiceStore } from '../../../stores/useStores'
 
 import { ComposerVoiceControls } from '../ComposerVoiceControls'
+import { PromptSuggestions } from '../PromptSuggestions'
 import { SendButton } from '../SendButton'
 import './index.css'
 
@@ -25,6 +30,23 @@ export const MessageComposer = observer(function MessageComposer() {
     el.style.height = 'auto'
     el.style.height = `${Math.min(el.scrollHeight, 200)}px`
   }, [chatStore.composerText])
+
+  const focusComposer = () => {
+    window.requestAnimationFrame(() => {
+      const el = textareaRef.current
+      if (!el) {
+        return
+      }
+      el.focus()
+      const length = el.value.length
+      el.setSelectionRange(length, length)
+    })
+  }
+
+  const handlePrefill = (text: string) => {
+    chatStore.setComposerText(text)
+    focusComposer()
+  }
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault()
@@ -59,6 +81,10 @@ export const MessageComposer = observer(function MessageComposer() {
     )
   }
 
+  const renderSuggestions = () => (
+    <PromptSuggestions onPrefill={handlePrefill} />
+  )
+
   const renderInput = () => (
     <>
       <label className="sr-only" htmlFor="message-input">
@@ -69,7 +95,9 @@ export const MessageComposer = observer(function MessageComposer() {
         ref={textareaRef}
         className="message-composer-input"
         rows={1}
-        placeholder={voiceStore.isMicActive ? 'Listening…' : 'Ask anything'}
+        placeholder={
+          voiceStore.isMicActive ? 'Listening…' : COMPOSER_PLACEHOLDER
+        }
         value={chatStore.composerText}
         onChange={(event) => {
           const next = event.target.value
@@ -100,10 +128,16 @@ export const MessageComposer = observer(function MessageComposer() {
     </form>
   )
 
+  const renderDisclaimer = () => (
+    <p className="message-composer-disclaimer">{DEMO_COMPLIANCE_DISCLAIMER}</p>
+  )
+
   return (
     <div className="message-composer-wrap">
       {renderVoiceError()}
+      {renderSuggestions()}
       {renderForm()}
+      {renderDisclaimer()}
     </div>
   )
 })

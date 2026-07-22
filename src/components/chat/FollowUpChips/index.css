@@ -1,0 +1,23 @@
+.follow-up-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  width: 100%;
+  padding-top: 0.15rem;
+}
+
+.follow-up-chip {
+  padding: 0.35rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.follow-up-chip:hover {
+  border-color: var(--accent);
+  background: var(--accent-muted);
+  color: var(--text-h);
+}

@@ -1,50 +1,68 @@
 # SynthioChat
 
-SynthioChat is a lightweight ChatGPT-style AI assistant UI built for the Synthio Labs frontend assignment. It focuses on clean architecture, polished UX, and browser-native voice features — with mocked chat responses for the MVP.
+**SynthioChat** is an MVP chat + voice assistant for **life-sciences customer engagement** — built in the spirit of Synthio Labs’ agentic AI platform for pharma GTM teams.
 
-## Features
+It helps field, medical, patient-support, and commercial users draft **compliant-minded** conversations across HCPs and patients: visit prep, evidence framing, objection handling, and supportive scripts — with browser-native voice for hands-free practice.
 
-### Chat
-- Create, switch, rename, delete, and pin/unpin conversations
-- Pinned chats appear in a dedicated **Pinned** section
-- Controlled message composer with Enter to send and Shift+Enter for newlines
-- Auto-growing multi-line input
-- Typing indicator and disabled send while waiting for a reply
-- Markdown rendering for assistant messages (`react-markdown` + `remark-gfm`)
-- Empty chats (no messages yet) are kept in memory only and are not persisted
+> Demo responses are illustrative only. They are **not** approved promotional content, **not** medical advice, and **not** a substitute for label / PI / MLR review.
 
-### Voice
-- **Mic mode:** live speech-to-text fills the composer; send manually
-- **Audio chat mode:** dedicated panel with listening / processing / speaking states
-- Silence detection auto-sends in audio chat, then reads the reply aloud (TTS)
-- Graceful errors for unsupported browsers or denied microphone access
+## Who it’s for
 
-### Layout & UX
-- Collapsible, **resizable sidebar** (up to ~40% of viewport width on desktop)
-- Chat search in the sidebar
-- Light / dark theme toggle (persisted)
-- Responsive mobile drawer sidebar
-- Toasts for key actions (new chat, pin, rename, delete, theme)
+| Audience | Typical workflows in this MVP |
+| --- | --- |
+| **Field** | HCP visit agendas, openers, objection handling, Audio chat role-play |
+| **Medical Affairs** | Evidence summaries, guideline framing, MLR-minded FAQ drafts |
+| **Patient Support** | Plain-language titration / adherence scripts, supportive call flows |
+| **Commercial** | Channel planning, educational nurture outlines, campaign briefs |
 
-### Architecture
+## Product highlights
+
+### Life-sciences engagement layer
+- Role-aware empty state with Synthio positioning copy
+- Persisted audience roles that filter starter prompts
+- GPT-style suggestion chips (prefill composer; one chip launches **Audio chat**)
+- Follow-up chips: shorter rewrite, safety caveats, HCP role-play, patient-friendly tone
+- Domain mock replies with visit tables, evidence bullets, blockquotes, and safety notes
+- Persistent demo compliance disclaimer under the composer
+
+### Chat core
+- Multi-session workspace: create, switch, rename, delete, pin / unpin
+- Dedicated **Pinned** section and sidebar search
+- Markdown assistant replies (`react-markdown` + `remark-gfm`) — headings, lists, tables, code, quotes
+- Typing indicator, slide-in message animation, Enter / Shift+Enter composer behavior
+- Empty draft chats stay in memory only (not persisted until they have messages)
+
+### Voice (clinical conversation practice)
+- **Mic mode:** speech-to-text into the composer; send when ready
+- **Audio chat:** listening → processing → speaking panel for hands-free Q&A
+- Silence auto-send + TTS readback of the assistant reply
+- Graceful handling when Speech APIs or mic permission are unavailable
+
+### Shell & UX
+- Collapsible / resizable sidebar (desktop), mobile drawer that starts closed and auto-collapses after navigate
+- Light / dark theme (dark default, persisted)
+- Toasts for key actions
+
+## Architecture
+
 ```
 UI Components → MobX Stores → Services
 ```
-Components never call services directly. Chat replies and voice APIs are abstracted behind services so real backends can be swapped in later.
+
+Components never call services directly. Mock chat and browser voice sit behind services so a clinical LLM, MI knowledge base, or realtime voice agent can replace them later without rewriting the UI.
 
 ## Tech stack
 
-- React 19 + TypeScript
-- Vite
+- React 19 + TypeScript + Vite
 - MobX (`mobx` / `mobx-react`)
 - `react-markdown` + `remark-gfm`
-- Browser `SpeechRecognition` / `speechSynthesis` (no extra voice libraries)
+- Browser `SpeechRecognition` / `speechSynthesis`
 
 ## Local setup
 
 ### Prerequisites
 - Node.js 20+ recommended
-- [pnpm](https://pnpm.io/) 
+- [pnpm](https://pnpm.io/)
 
 ### Install & run
 
@@ -54,8 +72,6 @@ pnpm dev
 ```
 
 Open the URL Vite prints (usually `http://localhost:5173`).
-
-### Other scripts
 
 ```bash
 pnpm build    # typecheck + production build
@@ -69,40 +85,46 @@ pnpm lint     # oxlint
 - Allow microphone permission when prompted
 
 ### Demo helpers
-- Include `force error` in a chat message to exercise the chat error banner / retry flow
+- Include `force error` in a message to exercise the chat error / retry path
 
-## Project structure (high level)
+## Project structure
 
 ```
 src/
-  components/   # chat, sidebar, voice, common UI
+  components/   # chat, sidebar, voice, common (one folder per component)
   stores/       # ChatStore, VoiceStore, UiStore
-  services/     # mock chat API, STT wrapper, TTS helper
-  Icons/        # SVG icon components
-  pages/        # HomePage shell
-  layouts/      # AppLayout
-  types/ utils/ constants/
+  services/     # mock chat API, STT, TTS
+  constants/    # storage keys, life-sciences prompts & roles
+  Icons/ pages/ layouts/ types/ utils/
 ```
 
 ## Persistence
 
-Chat sessions with at least one message (plus active session id and theme) are stored in `localStorage`. Voice state and empty draft chats are not persisted.
+`localStorage` keeps sessions with ≥1 message, active session id, theme, and audience role. Voice state and empty drafts are not persisted.
+
+## Try these MVP scenarios
+
+1. Pick **Field** → “HCP visit prep” → refine with **Add safety caveats**
+2. Pick **Medical Affairs** → “MLR-safe FAQ” → **Role-play as HCP**
+3. Pick **Patient Support** → “Adherence follow-up” → **Make patient-friendly**
+4. Use **Practice with Audio chat** to rehearse an opener out loud
 
 ## Future scope
 
-Ideas to evolve SynthioChat toward a production ChatGPT-like product:
+Roadmap toward a production Synthio-style engagement assistant:
 
-- **Authentication & accounts** — sign-in, multi-device sync, per-user history
-- **Real GenAI backends** — OpenAI / Anthropic / custom LLM APIs instead of mocked delays
-- **Streaming responses** — token-by-token assistant output with cancel / stop generation
-- **Conversation context** — system prompts, tools/function calling, longer memory
-- **Rich content** — code highlighting, file/image uploads, canvas / artifacts
-- **Realtime voice** — WebRTC / websocket voice agents beyond Web Speech API
-- **Collaboration** — shared chats, team workspaces, export / import
-- **Observability** — analytics, rate limits, usage quotas, moderation
+- **Clinical GenAI backends** — grounded models over label, PI, ISI, and approved content
+- **Streaming responses** — token streaming with stop / regenerate
+- **Compliance engines** — MLR workflows, AE / PV detection and escalation
+- **Citations & audit trails** — source-linked answers for medical review
+- **Prompt / playbook library** — therapy-area and brand-specific starters in the sidebar
+- **Brand context pinning** — indication, market, and approved claims that constrain suggestions
+- **Realtime voice agents** — WebRTC / websocket agents beyond Web Speech API
+- **Auth & workspaces** — accounts, team shared chats, export
+- **Observability** — usage, moderation, rate limits
 - **Offline & sync** — IndexedDB + backend reconciliation
-- **Accessibility polish** — deeper keyboard workflows, screen-reader live regions for streaming
+- **Accessibility** — richer keyboard and live-region support for streaming
 
 ## License
 
-Private assignment project — not licensed for redistribution unless Synthio Labs states otherwise.
+Private MVP — not licensed for redistribution unless Synthio Labs states otherwise.
