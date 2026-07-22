@@ -10,13 +10,18 @@ import { AppLayout } from "../layouts/AppLayout";
 
 const SIDEBAR_MIN_WIDTH = 240;
 const SIDEBAR_DEFAULT_WIDTH = 272;
+const MOBILE_BREAKPOINT = 767;
 
 function getSidebarMaxWidth(): number {
   return Math.floor(window.innerWidth * 0.4);
 }
 
+function isMobileViewport(): boolean {
+  return window.innerWidth <= MOBILE_BREAKPOINT;
+}
+
 export function HomePage() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(() => !isMobileViewport());
   const [sidebarWidth, setSidebarWidth] = useState(SIDEBAR_DEFAULT_WIDTH);
   const [isResizing, setIsResizing] = useState(false);
 
@@ -49,7 +54,7 @@ export function HomePage() {
   }, [isResizing]);
 
   const handleResizeStart = (event: ReactPointerEvent<HTMLDivElement>) => {
-    if (window.innerWidth <= 767) {
+    if (isMobileViewport()) {
       return;
     }
 
@@ -76,12 +81,19 @@ export function HomePage() {
     window.addEventListener("pointerup", handlePointerUp);
   };
 
+  const closeSidebarIfMobile = () => {
+    if (isMobileViewport()) {
+      setIsSidebarOpen(false);
+    }
+  };
+
   const renderSidebar = () => (
     <Sidebar
       isOpen={isSidebarOpen}
       width={sidebarWidth}
       isResizing={isResizing}
       onClose={() => setIsSidebarOpen(false)}
+      onNavigate={closeSidebarIfMobile}
       onResizeStart={handleResizeStart}
     />
   );

@@ -25,6 +25,7 @@
 .message-row {
   display: flex;
   width: 100%;
+  animation: message-slide-in-up 0.38s ease-out both;
 }
 
 .message-row--user {
@@ -33,6 +34,17 @@
 
 .message-row--assistant {
   justify-content: flex-start;
+}
+
+@keyframes message-slide-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(0.85rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .message-bubble {
@@ -69,18 +81,75 @@
   white-space: normal;
 }
 
+.message-bubble-content--markdown > :first-child {
+  margin-top: 0;
+}
+
+.message-bubble-content--markdown > :last-child {
+  margin-bottom: 0;
+}
+
 .message-bubble-content--markdown p {
   margin: 0 0 0.75rem;
 }
 
-.message-bubble-content--markdown p:last-child {
-  margin-bottom: 0;
+.message-bubble-content--markdown h1,
+.message-bubble-content--markdown h2,
+.message-bubble-content--markdown h3,
+.message-bubble-content--markdown h4 {
+  margin: 1rem 0 0.5rem;
+  color: var(--text-h);
+  font-weight: 650;
+  line-height: 1.3;
+}
+
+.message-bubble-content--markdown h1 {
+  font-size: 1.35rem;
+}
+
+.message-bubble-content--markdown h2 {
+  font-size: 1.2rem;
+}
+
+.message-bubble-content--markdown h3,
+.message-bubble-content--markdown h4 {
+  font-size: 1.05rem;
+}
+
+.message-bubble-content--markdown strong {
+  color: var(--text-h);
+  font-weight: 650;
+}
+
+.message-bubble-content--markdown em {
+  font-style: italic;
 }
 
 .message-bubble-content--markdown ul,
 .message-bubble-content--markdown ol {
   margin: 0 0 0.75rem;
   padding-left: 1.25rem;
+}
+
+.message-bubble-content--markdown li + li {
+  margin-top: 0.25rem;
+}
+
+.message-bubble-content--markdown blockquote {
+  margin: 0 0 0.85rem;
+  padding: 0.35rem 0 0.35rem 0.9rem;
+  border-left: 3px solid var(--accent);
+  color: var(--text-muted);
+}
+
+.message-bubble-content--markdown blockquote p {
+  margin: 0;
+}
+
+.message-bubble-content--markdown hr {
+  margin: 1rem 0;
+  border: none;
+  border-top: 1px solid var(--border);
 }
 
 .message-bubble-content--markdown code {
@@ -92,9 +161,10 @@
 }
 
 .message-bubble-content--markdown pre {
-  margin: 0 0 0.75rem;
-  padding: 0.75rem 1rem;
+  margin: 0 0 0.85rem;
+  padding: 0.85rem 1rem;
   overflow-x: auto;
+  border: 1px solid var(--border);
   border-radius: 0.75rem;
   background: var(--bg-subtle);
 }
@@ -102,10 +172,36 @@
 .message-bubble-content--markdown pre code {
   padding: 0;
   background: transparent;
+  font-size: 0.875rem;
+  line-height: 1.55;
 }
 
 .message-bubble-content--markdown a {
   color: var(--accent);
+}
+
+.message-bubble-content--markdown table {
+  width: 100%;
+  margin: 0 0 0.85rem;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+}
+
+.message-bubble-content--markdown th,
+.message-bubble-content--markdown td {
+  padding: 0.45rem 0.65rem;
+  border: 1px solid var(--border);
+  text-align: left;
+}
+
+.message-bubble-content--markdown th {
+  background: var(--bg-subtle);
+  color: var(--text-h);
+  font-weight: 600;
+}
+
+.message-bubble-content--markdown input[type='checkbox'] {
+  margin-right: 0.4rem;
 }
 
 .message-bubble-time {

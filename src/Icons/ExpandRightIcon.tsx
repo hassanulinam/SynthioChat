@@ -3,7 +3,7 @@ type Props = {
   size?: number;
 };
 
-const ExpandRightIcon = ({ fill = "#000", size = 24 }: Props) => (
+const ExpandRightIcon = ({ fill = "#000", size = 28 }: Props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={size}
@@ -13,8 +13,10 @@ const ExpandRightIcon = ({ fill = "#000", size = 24 }: Props) => (
   >
     <path
       stroke={fill}
-      strokeWidth={2}
-      d="m12 18 6-6-6-6M6 18l6-6-6-6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      d="M4 8h9m-9 4h16m0 0-3-3m3 3-3 3M4 16h9"
       fill={fill}
     ></path>
   </svg>

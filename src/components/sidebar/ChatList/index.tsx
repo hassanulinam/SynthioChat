@@ -7,7 +7,11 @@ import type { ChatSession } from '../../../types/chat.types'
 import { ChatItem } from '../ChatItem'
 import './index.css'
 
-export const ChatList = observer(function ChatList() {
+interface ChatListProps {
+  onNavigate?: () => void
+}
+
+export const ChatList = observer(function ChatList({ onNavigate }: ChatListProps) {
   const chatStore = useChatStore()
   const hasQuery = chatStore.searchQuery.trim().length > 0
 
@@ -34,7 +38,7 @@ export const ChatList = observer(function ChatList() {
         <ul className="chat-list">
           {sessions.map((session) => (
             <li key={session.id}>
-              <ChatItem session={session} />
+              <ChatItem session={session} onNavigate={onNavigate} />
             </li>
           ))}
         </ul>

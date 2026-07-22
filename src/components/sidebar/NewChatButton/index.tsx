@@ -6,7 +6,13 @@ import { useChatStore, useUiStore } from '../../../stores/useStores'
 
 import './index.css'
 
-export const NewChatButton = observer(function NewChatButton() {
+interface NewChatButtonProps {
+  onNavigate?: () => void
+}
+
+export const NewChatButton = observer(function NewChatButton({
+  onNavigate,
+}: NewChatButtonProps) {
   const chatStore = useChatStore()
   const uiStore = useUiStore()
   const iconFill = uiStore.isDark ? '#ececec' : '#171717'
@@ -21,6 +27,7 @@ export const NewChatButton = observer(function NewChatButton() {
       onClick={() => {
         chatStore.createChat()
         uiStore.showToast('New chat started')
+        onNavigate?.()
       }}
     >
       {renderIcon()}

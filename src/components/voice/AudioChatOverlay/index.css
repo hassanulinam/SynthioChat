@@ -48,10 +48,10 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1.5rem;
+  gap: 1.75rem;
   min-height: 0;
   overflow-y: auto;
-  padding: 2rem 1.5rem;
+  padding: 2rem 1.5rem 2.25rem;
   text-align: center;
 }
 
@@ -60,6 +60,7 @@
   max-width: 22rem;
   color: var(--text-muted);
   font-size: 0.9375rem;
+  line-height: 1.5;
 }
 
 .audio-chat-overlay-draft {

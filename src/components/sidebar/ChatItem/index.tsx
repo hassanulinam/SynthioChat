@@ -20,9 +20,13 @@ import './index.css'
 
 interface ChatItemProps {
   session: ChatSession
+  onNavigate?: () => void
 }
 
-export const ChatItem = observer(function ChatItem({ session }: ChatItemProps) {
+export const ChatItem = observer(function ChatItem({
+  session,
+  onNavigate,
+}: ChatItemProps) {
   const chatStore = useChatStore()
   const uiStore = useUiStore()
   const isActive = chatStore.activeSessionId === session.id
@@ -133,7 +137,10 @@ export const ChatItem = observer(function ChatItem({ session }: ChatItemProps) {
     <button
       type="button"
       className={`chat-item${isActive ? ' chat-item--active' : ''}`}
-      onClick={() => chatStore.switchChat(session.id)}
+      onClick={() => {
+        chatStore.switchChat(session.id)
+        onNavigate?.()
+      }}
       aria-current={isActive ? 'true' : undefined}
     >
       {renderPinBadge()}

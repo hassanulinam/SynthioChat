@@ -11,7 +11,7 @@ export interface ToastItem {
 }
 
 export class UiStore {
-  theme: ThemeMode = 'light'
+  theme: ThemeMode = 'dark'
   toasts: ToastItem[] = []
 
   constructor() {
@@ -50,7 +50,7 @@ export class UiStore {
 
   private hydrateTheme(): void {
     const saved = readStorage<ThemeMode>(THEME_KEY)
-    const theme = saved === 'dark' || saved === 'light' ? saved : 'light'
+    const theme = saved === 'dark' || saved === 'light' ? saved : 'dark'
     this.theme = theme
     document.documentElement.dataset.theme = theme
   }

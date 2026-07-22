@@ -1,21 +1,22 @@
-import type { CSSProperties, PointerEvent as ReactPointerEvent } from 'react'
-import { observer } from 'mobx-react'
+import type { CSSProperties, PointerEvent as ReactPointerEvent } from "react";
+import { observer } from "mobx-react";
 
-import ExpandRightIcon from '../../../Icons/ExpandRightIcon'
-import { ThemeToggle } from '../../common/ThemeToggle'
-import { useUiStore } from '../../../stores/useStores'
+import ExpandRightIcon from "../../../Icons/ExpandRightIcon";
+import { ThemeToggle } from "../../common/ThemeToggle";
+import { useUiStore } from "../../../stores/useStores";
 
-import { ChatList } from '../ChatList'
-import { NewChatButton } from '../NewChatButton'
-import { SidebarSearch } from '../SidebarSearch'
-import './index.css'
+import { ChatList } from "../ChatList";
+import { NewChatButton } from "../NewChatButton";
+import { SidebarSearch } from "../SidebarSearch";
+import "./index.css";
 
 interface SidebarProps {
-  isOpen: boolean
-  width: number
-  isResizing: boolean
-  onClose: () => void
-  onResizeStart: (event: ReactPointerEvent<HTMLDivElement>) => void
+  isOpen: boolean;
+  width: number;
+  isResizing: boolean;
+  onClose: () => void;
+  onNavigate: () => void;
+  onResizeStart: (event: ReactPointerEvent<HTMLDivElement>) => void;
 }
 
 export const Sidebar = observer(function Sidebar({
@@ -23,18 +24,19 @@ export const Sidebar = observer(function Sidebar({
   width,
   isResizing,
   onClose,
+  onNavigate,
   onResizeStart,
 }: SidebarProps) {
-  const uiStore = useUiStore()
-  const iconFill = uiStore.isDark ? '#ececec' : '#171717'
+  const uiStore = useUiStore();
+  const iconFill = uiStore.isDark ? "#ececec" : "#171717";
 
   const renderBackdrop = () => (
     <div
-      className={`sidebar-backdrop${isOpen ? ' sidebar-backdrop--open' : ''}`}
+      className={`sidebar-backdrop${isOpen ? " sidebar-backdrop--open" : ""}`}
       onClick={onClose}
       aria-hidden="true"
     />
-  )
+  );
 
   const renderHeader = () => (
     <div className="sidebar-header">
@@ -46,34 +48,34 @@ export const Sidebar = observer(function Sidebar({
         onClick={onClose}
       >
         <span className="sidebar-collapse-icon">
-          <ExpandRightIcon fill={iconFill} size={16} />
+          <ExpandRightIcon fill={iconFill} />
         </span>
       </button>
     </div>
-  )
+  );
 
   const renderActions = () => (
     <div className="sidebar-actions">
       <SidebarSearch />
-      <NewChatButton />
+      <NewChatButton onNavigate={onNavigate} />
     </div>
-  )
+  );
 
   const renderList = () => (
     <div className="sidebar-list">
-      <ChatList />
+      <ChatList onNavigate={onNavigate} />
     </div>
-  )
+  );
 
   const renderFooter = () => (
     <div className="sidebar-footer">
       <ThemeToggle />
     </div>
-  )
+  );
 
   const renderResizeHandle = () => {
     if (!isOpen) {
-      return null
+      return null;
     }
 
     return (
@@ -84,21 +86,21 @@ export const Sidebar = observer(function Sidebar({
         aria-label="Resize sidebar"
         onPointerDown={onResizeStart}
       />
-    )
-  }
+    );
+  };
 
   return (
     <>
       {renderBackdrop()}
       <aside
-        className={`sidebar${isOpen ? ' sidebar--open' : ''}${
-          isResizing ? ' sidebar--resizing' : ''
+        className={`sidebar${isOpen ? " sidebar--open" : ""}${
+          isResizing ? " sidebar--resizing" : ""
         }`}
         aria-label="Chat sidebar"
         aria-hidden={!isOpen}
         style={
           {
-            '--sidebar-width': `${width}px`,
+            "--sidebar-width": `${width}px`,
           } as CSSProperties
         }
       >
@@ -109,5 +111,5 @@ export const Sidebar = observer(function Sidebar({
         {renderResizeHandle()}
       </aside>
     </>
-  )
-})
+  );
+});

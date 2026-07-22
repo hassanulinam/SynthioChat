@@ -1,11 +1,20 @@
 .listener-animation {
-  position: relative;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.listener-animation-stage {
+  position: relative;
+  display: flex;
   align-items: center;
   justify-content: center;
   width: 14rem;
   height: 14rem;
+  flex-shrink: 0;
+  overflow: hidden;
 }
 
 .listener-animation-ring {
@@ -55,12 +64,13 @@
 }
 
 .listener-animation-label {
-  position: absolute;
-  bottom: -2.15rem;
+  position: relative;
+  z-index: 1;
   margin: 0;
   color: var(--text-muted);
   font-size: 0.9375rem;
   font-weight: 500;
+  line-height: 1.4;
 }
 
 .listener-animation--processing .listener-animation-ring {

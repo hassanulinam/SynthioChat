@@ -46,14 +46,20 @@ export function ListenerAnimation({ phase }: ListenerAnimationProps) {
     </span>
   );
 
+  const renderStage = () => (
+    <div className="listener-animation-stage">
+      {renderRings()}
+      {renderCore()}
+    </div>
+  );
+
   const renderLabel = () => (
     <p className="listener-animation-label">{getPhaseLabel(phase)}</p>
   );
 
   return (
     <div className={`listener-animation listener-animation--${phase}`}>
-      {renderRings()}
-      {renderCore()}
+      {renderStage()}
       {renderLabel()}
     </div>
   );

@@ -3,23 +3,31 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  min-height: 3.25rem;
+  height: 3.75rem;
+  box-sizing: border-box;
   padding: 0.75rem 1rem;
   overflow: hidden;
   background: var(--header-bg);
   border-bottom: 1px solid var(--border);
 }
 
+.chat-header-icon-slot {
+  display: inline-flex;
+  flex-shrink: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+}
+
 .chat-header-icon-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.25rem;
-  height: 2.25rem;
-  flex-shrink: 0;
-  border: 1px solid var(--border);
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: none;
   border-radius: 0.5rem;
-  background: var(--bg-elevated);
+  background: transparent;
   color: var(--text-h);
 }
 
