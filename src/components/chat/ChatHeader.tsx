@@ -32,6 +32,9 @@ export const ChatHeader = observer(function ChatHeader({
         </button>
       ) : null}
       <h1 className="chat-header-title">{title}</h1>
+      <span className="chat-header-badge" aria-hidden="true">
+        SynthioChat
+      </span>
     </header>
   )
 })

@@ -1,6 +1,7 @@
+import type { CSSProperties, PointerEvent as ReactPointerEvent } from 'react'
 import { observer } from 'mobx-react'
 
-import CloseIcon from '../../Icons/CloseIcon'
+import ExpandRightIcon from '../../Icons/ExpandRightIcon'
 import { ThemeToggle } from '../common/ThemeToggle'
 import { useUiStore } from '../../stores/useStores'
 
@@ -11,10 +12,19 @@ import './Sidebar.css'
 
 interface SidebarProps {
   isOpen: boolean
+  width: number
+  isResizing: boolean
   onClose: () => void
+  onResizeStart: (event: ReactPointerEvent<HTMLDivElement>) => void
 }
 
-export const Sidebar = observer(function Sidebar({ isOpen, onClose }: SidebarProps) {
+export const Sidebar = observer(function Sidebar({
+  isOpen,
+  width,
+  isResizing,
+  onClose,
+  onResizeStart,
+}: SidebarProps) {
   const uiStore = useUiStore()
   const iconFill = uiStore.isDark ? '#ececec' : '#171717'
 
@@ -27,7 +37,9 @@ export const Sidebar = observer(function Sidebar({ isOpen, onClose }: SidebarPro
         aria-label="Collapse sidebar"
         onClick={onClose}
       >
-        <CloseIcon fill={iconFill} size={16} />
+        <span className="sidebar-collapse-icon">
+          <ExpandRightIcon fill={iconFill} size={16} />
+        </span>
       </button>
     </div>
   )
@@ -40,9 +52,16 @@ export const Sidebar = observer(function Sidebar({ isOpen, onClose }: SidebarPro
         aria-hidden="true"
       />
       <aside
-        className={`sidebar${isOpen ? ' sidebar--open' : ''}`}
+        className={`sidebar${isOpen ? ' sidebar--open' : ''}${
+          isResizing ? ' sidebar--resizing' : ''
+        }`}
         aria-label="Chat sidebar"
         aria-hidden={!isOpen}
+        style={
+          {
+            '--sidebar-width': `${width}px`,
+          } as CSSProperties
+        }
       >
         {renderHeader()}
         <div className="sidebar-actions">
@@ -55,6 +74,15 @@ export const Sidebar = observer(function Sidebar({ isOpen, onClose }: SidebarPro
         <div className="sidebar-footer">
           <ThemeToggle />
         </div>
+        {isOpen ? (
+          <div
+            className="sidebar-resize-handle"
+            role="separator"
+            aria-orientation="vertical"
+            aria-label="Resize sidebar"
+            onPointerDown={onResizeStart}
+          />
+        ) : null}
       </aside>
     </>
   )

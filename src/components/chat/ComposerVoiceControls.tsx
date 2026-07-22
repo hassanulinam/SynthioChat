@@ -26,7 +26,11 @@ export const ComposerVoiceControls = observer(function ComposerVoiceControls() {
         onClick={() => voiceStore.toggleMic()}
       >
         {voiceStore.isMicActive ? (
-          <span className="composer-voice-btn-pulse" aria-hidden="true" />
+          <>
+            <span className="composer-voice-btn-pulse composer-voice-btn-pulse--1" aria-hidden="true" />
+            <span className="composer-voice-btn-pulse composer-voice-btn-pulse--2" aria-hidden="true" />
+            <span className="composer-voice-btn-pulse composer-voice-btn-pulse--3" aria-hidden="true" />
+          </>
         ) : null}
         <MicIcon fill="currentColor" size={18} />
       </button>

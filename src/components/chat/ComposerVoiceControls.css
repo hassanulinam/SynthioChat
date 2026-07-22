@@ -29,15 +29,27 @@
 
 .composer-voice-btn--mic-active {
   color: var(--accent);
+  animation: mic-icon-throb 1.8s ease-in-out infinite;
 }
 
 .composer-voice-btn-pulse {
   position: absolute;
-  inset: -3px;
+  inset: -2px;
   border: 2px solid var(--accent);
   border-radius: 999px;
-  animation: mic-pulse 1.4s ease-out infinite;
   pointer-events: none;
+}
+
+.composer-voice-btn-pulse--1 {
+  animation: mic-pulse 2.2s ease-out infinite;
+}
+
+.composer-voice-btn-pulse--2 {
+  animation: mic-pulse 2.2s ease-out infinite 0.55s;
+}
+
+.composer-voice-btn-pulse--3 {
+  animation: mic-pulse 2.2s ease-out infinite 1.1s;
 }
 
 .composer-voice-btn--audio-chat {
@@ -51,15 +63,25 @@
 
 @keyframes mic-pulse {
   0% {
-    transform: scale(0.95);
-    opacity: 0.8;
+    transform: scale(0.9);
+    opacity: 0.85;
   }
   70% {
-    transform: scale(1.2);
+    transform: scale(1.75);
     opacity: 0;
   }
   100% {
-    transform: scale(1.2);
+    transform: scale(1.75);
     opacity: 0;
+  }
+}
+
+@keyframes mic-icon-throb {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
   }
 }

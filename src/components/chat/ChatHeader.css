@@ -1,9 +1,11 @@
 .chat-header {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 0.75rem;
   min-height: 3.25rem;
   padding: 0.75rem 1rem;
+  overflow: hidden;
   background: var(--header-bg);
   border-bottom: 1px solid var(--border);
 }
@@ -29,10 +31,30 @@
   margin: 0;
   flex: 1;
   min-width: 0;
+  padding-right: 5rem;
   font-size: 0.95rem;
   font-weight: 600;
   color: var(--text-h);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.chat-header-badge {
+  position: absolute;
+  top: 0.85rem;
+  right: -1rem;
+  width: 8.5rem;
+  padding: 0.28rem 0;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-align: center;
+  /* text-transform: uppercase; */
+  transform: rotate(35deg);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  pointer-events: none;
+  user-select: none;
 }
