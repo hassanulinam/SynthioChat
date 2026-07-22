@@ -26,3 +26,5 @@ dist-ssr
 .env
 .env.*
 
+.cursor
+.pnpm-store
