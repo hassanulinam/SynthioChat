@@ -27,6 +27,9 @@
   --sidebar-hover: #ececee;
   --composer-bg: #f4f4f4;
   --composer-border: #e5e5e5;
+  --toast-bg: #ecfdf8;
+  --toast-border: #99f6e4;
+  --toast-text: #0f766e;
   --shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
   --chat-max-width: 48rem;
 
@@ -70,6 +73,9 @@
   --sidebar-hover: #262626;
   --composer-bg: #303030;
   --composer-border: #404040;
+  --toast-bg: #134e4a;
+  --toast-border: #2dd4bf;
+  --toast-text: #ccfbf1;
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
 }
 

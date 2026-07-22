@@ -216,16 +216,18 @@ export class VoiceService {
       return
     }
 
+    // Drop handlers first so late browser events cannot revive state.
     recognition.onstart = null
     recognition.onresult = null
     recognition.onerror = null
     recognition.onend = null
 
+    // Prefer abort() so the browser releases the mic stream immediately.
     try {
-      recognition.stop()
+      recognition.abort()
     } catch {
       try {
-        recognition.abort()
+        recognition.stop()
       } catch {
         // Already stopped.
       }

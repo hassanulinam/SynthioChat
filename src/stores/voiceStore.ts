@@ -81,27 +81,11 @@ export class VoiceStore {
     }
 
     this.voiceService.endCall()
+    cancelSpeech()
     this.mode = 'idle'
     this.status = 'disconnected'
     this.interimText = ''
-
-    // Keep whatever is currently in the composer (user may have edited it).
-    this.micDraftBase = this.chatStore.composerText.trim()
-  }
-
-  /** Call when a message is sent so live transcript does not refill the input. */
-  resetMicDraftAfterSend(): void {
     this.micDraftBase = ''
-    this.interimText = ''
-
-    if (this.mode !== 'mic') {
-      return
-    }
-
-    // Restart recognition so in-flight interim results cannot refill the composer.
-    this.voiceService.endCall()
-    this.status = 'connecting'
-    this.voiceService.startCall(this.createMicHandlers())
   }
 
   /** Keep mic draft in sync when the user edits the composer while listening. */
@@ -143,6 +127,7 @@ export class VoiceStore {
     this.audioChatDraft = ''
     this.audioChatPending = ''
     this.interimText = ''
+    this.error = null
   }
 
   retryMic(): void {
@@ -175,6 +160,7 @@ export class VoiceStore {
     this.audioChatPending = ''
     this.audioChatDraft = ''
     this.audioChatRunning = false
+    this.error = null
   }
 
   private createMicHandlers() {
@@ -338,6 +324,11 @@ export class VoiceStore {
     try {
       await speakText(assistantMessage.content)
     } catch (err) {
+      // Ignore TTS failures after the user already stopped audio chat.
+      if (!this.audioChatRunning || this.mode !== 'audioChat') {
+        return
+      }
+
       runInAction(() => {
         this.error =
           err instanceof Error ? err.message : 'Unable to read the response aloud.'

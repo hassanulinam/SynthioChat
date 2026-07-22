@@ -13,7 +13,7 @@ export class RootStore {
     this.uiStore = new UiStore()
 
     this.chatStore.setComposerClearedHandler(() => {
-      this.voiceStore.resetMicDraftAfterSend()
+      this.voiceStore.stopMic()
     })
     this.chatStore.initPersistence()
   }

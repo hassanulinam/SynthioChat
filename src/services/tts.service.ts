@@ -13,7 +13,14 @@ export function cancelSpeech(): void {
   if (!isSpeechSynthesisSupported()) {
     return
   }
+
+  // Chrome can keep speaking after a single cancel(); pause + cancel is reliable.
+  window.speechSynthesis.pause()
   window.speechSynthesis.cancel()
+}
+
+function isIntentionalSpeechCancel(errorCode: string): boolean {
+  return errorCode === 'canceled' || errorCode === 'interrupted'
 }
 
 export function speakText(text: string): Promise<void> {
@@ -36,7 +43,13 @@ export function speakText(text: string): Promise<void> {
     utterance.rate = 1
 
     utterance.onend = () => resolve()
-    utterance.onerror = () => {
+    utterance.onerror = (event) => {
+      // User/stop-driven cancel should not surface as a failure.
+      if (isIntentionalSpeechCancel(event.error)) {
+        resolve()
+        return
+      }
+
       reject(new TtsServiceError('Unable to read the response aloud.'))
     }
 
