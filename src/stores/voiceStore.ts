@@ -85,11 +85,32 @@ export class VoiceStore {
     this.status = 'disconnected'
     this.interimText = ''
 
-    const composed = this.micDraftBase.trim()
-    if (composed) {
-      this.chatStore.setComposerText(composed)
-    }
+    // Keep whatever is currently in the composer (user may have edited it).
+    this.micDraftBase = this.chatStore.composerText.trim()
+  }
+
+  /** Call when a message is sent so live transcript does not refill the input. */
+  resetMicDraftAfterSend(): void {
     this.micDraftBase = ''
+    this.interimText = ''
+
+    if (this.mode !== 'mic') {
+      return
+    }
+
+    // Restart recognition so in-flight interim results cannot refill the composer.
+    this.voiceService.endCall()
+    this.status = 'connecting'
+    this.voiceService.startCall(this.createMicHandlers())
+  }
+
+  /** Keep mic draft in sync when the user edits the composer while listening. */
+  syncMicDraftFromComposer(text: string): void {
+    if (this.mode !== 'mic') {
+      return
+    }
+    this.micDraftBase = text
+    this.interimText = ''
   }
 
   startAudioChat(): void {

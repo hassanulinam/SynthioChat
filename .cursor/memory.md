@@ -1,21 +1,25 @@
 # SynthioChat Progress
 
 ## Current Phase
-UI polish — ChatGPT-style layout
+Nice-to-haves — complete
 
 ## Completed
-- Pill composer matching reference (mic + pink audio CTA; no plus)
-- Auto-growing multi-line input
-- Full-width main chat area after voice panel removal
-- Centered chat column (`max-width: 48rem`) for messages + composer
-- ChatGPT-like empty greeting and message styling
+- Composer clears immediately on send; mic draft resets (recognition restarts so interim cannot refill)
+- User messages right-aligned in chat column
+- Session rename + delete
+- Lightweight markdown for assistant replies
+- Light/dark theme toggle (persisted)
+- Toast notifications for key actions
+- Audio chat TTS already present from earlier work
 
 ## Files Modified
-- `src/index.css`, layout/chat CSS, `MessageComposer`, `ComposerVoiceControls`, `SendButton`
+- Stores: `chatStore`, `voiceStore`, `uiStore`, `rootStore`
+- Chat UI alignment + markdown bubble
+- Sidebar: ChatItem actions, ThemeToggle, ToastHost
 
 ## Remaining Work
-- Nice-to-haves (deferred): real icons, rename/delete, markdown
+- Real icons/images (still placeholders by design)
 
 ## Notes / Decisions
-- Composer actions order: Send (when text) → Mic → Audio chat
+- No new libraries for markdown (small custom renderer)
 - Icons remain placeholders

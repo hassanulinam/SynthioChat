@@ -76,7 +76,13 @@ export const MessageComposer = observer(function MessageComposer() {
               voiceStore.isMicActive ? 'Listening…' : 'Ask anything'
             }
             value={chatStore.composerText}
-            onChange={(event) => chatStore.setComposerText(event.target.value)}
+            onChange={(event) => {
+              const next = event.target.value
+              chatStore.setComposerText(next)
+              if (voiceStore.isMicActive) {
+                voiceStore.syncMicDraftFromComposer(next)
+              }
+            }}
             onKeyDown={handleKeyDown}
             disabled={chatStore.isLoading}
           />

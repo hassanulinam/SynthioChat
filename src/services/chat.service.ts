@@ -16,10 +16,10 @@ export interface SendMessageOptions {
 }
 
 const MOCK_REPLIES = [
-  'That is a great question. Here is a helpful response based on what you shared.',
-  'I understand. Let me walk through this step by step.',
-  'Thanks for the details. Here is what I would suggest next.',
-  'Absolutely. Here is a concise answer to keep things moving.',
+  'That is a great question. Here is a **helpful** response based on what you shared.',
+  'I understand. Let me walk through this:\n\n1. Clarify the goal\n2. Break it into steps\n3. Ship a small version first',
+  'Thanks for the details. Next I would try:\n\n- Keep the prompt short\n- Add one concrete example\n- Iterate from there',
+  'Absolutely. A concise tip: prefer *clear* wording over clever wording. You can also use `Shift+Enter` for a new line.',
 ]
 
 function pickReply(userContent: string): string {

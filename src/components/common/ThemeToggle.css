@@ -1,0 +1,22 @@
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  border: none;
+  border-radius: 0.5rem;
+  background: var(--sidebar-active);
+  color: var(--sidebar-text);
+  font-size: 0.875rem;
+}
+
+.theme-toggle:hover {
+  background: var(--sidebar-hover);
+}
+
+.theme-toggle .icon-placeholder {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 999px;
+}

@@ -23,9 +23,14 @@ export class ChatStore {
   composerText = ''
   private lastFailedContent: string | null = null
   private persistenceEnabled = false
+  private onComposerCleared: (() => void) | null = null
 
   constructor() {
     makeAutoObservable(this, {}, { autoBind: true })
+  }
+
+  setComposerClearedHandler(handler: () => void): void {
+    this.onComposerCleared = handler
   }
 
   get activeSession(): ChatSession | null {
@@ -86,6 +91,42 @@ export class ChatStore {
     this.error = null
   }
 
+  renameChat(sessionId: string, title: string): boolean {
+    const session = this.sessions.find((item) => item.id === sessionId)
+    if (!session) {
+      return false
+    }
+
+    const nextTitle = title.trim()
+    if (!nextTitle) {
+      return false
+    }
+
+    session.title = truncateTitle(nextTitle, 60)
+    session.updatedAt = new Date()
+    this.persist()
+    return true
+  }
+
+  deleteChat(sessionId: string): boolean {
+    const index = this.sessions.findIndex((item) => item.id === sessionId)
+    if (index === -1) {
+      return false
+    }
+
+    this.sessions = this.sessions.filter((item) => item.id !== sessionId)
+
+    if (this.activeSessionId === sessionId) {
+      this.activeSessionId = this.sessions[0]?.id ?? null
+      this.composerText = ''
+      this.error = null
+      this.lastFailedContent = null
+    }
+
+    this.persist()
+    return true
+  }
+
   receiveMessage(message: Message): void {
     const session = this.activeSession
     if (!session) {
@@ -131,6 +172,7 @@ export class ChatStore {
     this.error = null
     this.lastFailedContent = null
     this.persist()
+    this.onComposerCleared?.()
 
     try {
       const assistantMessage = await sendChatMessage(session.id, trimmed, {

@@ -1,4 +1,5 @@
 import { IconButton } from '../common/IconButton'
+import { ThemeToggle } from '../common/ThemeToggle'
 
 import { ChatList } from './ChatList'
 import { NewChatButton } from './NewChatButton'
@@ -45,6 +46,9 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
         </div>
         <div className="sidebar-list">
           <ChatList />
+        </div>
+        <div className="sidebar-footer">
+          <ThemeToggle />
         </div>
       </aside>
     </>

@@ -1,7 +1,20 @@
+.chat-item-row {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+  border-radius: 0.5rem;
+}
+
+.chat-item-row:hover,
+.chat-item-row--active {
+  background: var(--sidebar-active);
+}
+
 .chat-item {
   display: block;
-  width: 100%;
-  padding: 0.625rem 0.75rem;
+  flex: 1;
+  min-width: 0;
+  padding: 0.625rem 0.5rem 0.625rem 0.75rem;
   border: none;
   border-radius: 0.5rem;
   background: transparent;
@@ -9,12 +22,8 @@
   text-align: left;
 }
 
-.chat-item:hover {
-  background: var(--sidebar-active);
-}
-
 .chat-item--active {
-  background: var(--sidebar-active);
+  background: transparent;
 }
 
 .chat-item-title {
@@ -23,4 +32,68 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   font-size: 0.9375rem;
+}
+
+.chat-item-actions {
+  display: flex;
+  gap: 0.1rem;
+  opacity: 0;
+  padding-right: 0.25rem;
+}
+
+.chat-item-row:hover .chat-item-actions,
+.chat-item-row--active .chat-item-actions {
+  opacity: 1;
+}
+
+.chat-item-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  border: none;
+  border-radius: 0.35rem;
+  background: transparent;
+  color: var(--sidebar-muted);
+}
+
+.chat-item-action:hover {
+  background: var(--sidebar-hover);
+  color: var(--sidebar-text);
+}
+
+.chat-item-action .icon-placeholder {
+  width: 0.7rem;
+  height: 0.7rem;
+}
+
+.chat-item--editing {
+  padding: 0.35rem 0.5rem;
+}
+
+.chat-item-rename-input {
+  width: 100%;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid var(--sidebar-border);
+  border-radius: 0.35rem;
+  background: var(--bg-elevated);
+  color: var(--sidebar-text);
+}
+
+.chat-item-rename-input:focus {
+  outline: 1px solid var(--accent);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }

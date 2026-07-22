@@ -35,11 +35,13 @@ export const MessageList = observer(function MessageList() {
 
   return (
     <div className="message-list" aria-live="polite">
-      {messages.map((message) => (
-        <MessageBubble key={message.id} message={message} />
-      ))}
-      {chatStore.isLoading ? <TypingIndicator /> : null}
-      <div ref={bottomRef} />
+      <div className="message-list-column">
+        {messages.map((message) => (
+          <MessageBubble key={message.id} message={message} />
+        ))}
+        {chatStore.isLoading ? <TypingIndicator /> : null}
+        <div ref={bottomRef} />
+      </div>
     </div>
   )
 })

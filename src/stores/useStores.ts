@@ -18,3 +18,7 @@ export function useChatStore() {
 export function useVoiceStore() {
   return useRootStore().voiceStore
 }
+
+export function useUiStore() {
+  return useRootStore().uiStore
+}

@@ -8,14 +8,111 @@
   padding: 1rem 1rem 1.5rem;
 }
 
-.message-list > .message-bubble,
-.message-list > .typing-indicator {
+.message-list-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
   width: 100%;
   max-width: var(--chat-max-width);
-  margin-inline: auto;
+  margin: 0 auto;
 }
 
 .message-list--empty {
   justify-content: center;
   align-items: center;
+}
+
+.message-row {
+  display: flex;
+  width: 100%;
+}
+
+.message-row--user {
+  justify-content: flex-end;
+}
+
+.message-row--assistant {
+  justify-content: flex-start;
+}
+
+.message-bubble {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  max-width: 100%;
+}
+
+.message-bubble--user {
+  width: fit-content;
+  max-width: min(85%, 34rem);
+  padding: 0.75rem 1rem;
+  border-radius: 1.25rem;
+  background: var(--user-bubble);
+  color: var(--user-bubble-text);
+}
+
+.message-bubble--assistant {
+  width: 100%;
+  max-width: 100%;
+  color: var(--assistant-bubble-text);
+}
+
+.message-bubble-content {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+.message-bubble-content--markdown {
+  white-space: normal;
+}
+
+.message-bubble-content--markdown p {
+  margin: 0 0 0.75rem;
+}
+
+.message-bubble-content--markdown p:last-child {
+  margin-bottom: 0;
+}
+
+.message-bubble-content--markdown ul,
+.message-bubble-content--markdown ol {
+  margin: 0 0 0.75rem;
+  padding-left: 1.25rem;
+}
+
+.message-bubble-content--markdown code {
+  padding: 0.1rem 0.35rem;
+  border-radius: 0.3rem;
+  background: var(--bg-subtle);
+  font-family: var(--mono);
+  font-size: 0.9em;
+}
+
+.message-bubble-content--markdown pre {
+  margin: 0 0 0.75rem;
+  padding: 0.75rem 1rem;
+  overflow-x: auto;
+  border-radius: 0.75rem;
+  background: var(--bg-subtle);
+}
+
+.message-bubble-content--markdown pre code {
+  padding: 0;
+  background: transparent;
+}
+
+.message-bubble-content--markdown a {
+  color: var(--accent);
+}
+
+.message-bubble-time {
+  font-size: 0.75rem;
+  opacity: 0.6;
+}
+
+.message-bubble--user .message-bubble-time {
+  align-self: flex-end;
 }
