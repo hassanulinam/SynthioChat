@@ -7,14 +7,16 @@ import { useChatStore, useVoiceStore } from '../../stores/useStores'
 import { ChatHeader } from './ChatHeader'
 import { MessageComposer } from './MessageComposer'
 import { MessageList } from './MessageList'
-import './ChatWindow.css'
+import './index.css'
 
 interface ChatWindowProps {
-  onOpenSidebar?: () => void
+  isSidebarOpen: boolean
+  onExpandSidebar: () => void
 }
 
 export const ChatWindow = observer(function ChatWindow({
-  onOpenSidebar,
+  isSidebarOpen,
+  onExpandSidebar,
 }: ChatWindowProps) {
   const chatStore = useChatStore()
   const voiceStore = useVoiceStore()
@@ -40,7 +42,10 @@ export const ChatWindow = observer(function ChatWindow({
 
   return (
     <section className="chat-window" aria-label="Chat">
-      <ChatHeader onOpenSidebar={onOpenSidebar} />
+      <ChatHeader
+        isSidebarOpen={isSidebarOpen}
+        onExpandSidebar={onExpandSidebar}
+      />
       {renderError()}
       {!isAudioChat ? <MessageList /> : null}
       <AudioChatOverlay />

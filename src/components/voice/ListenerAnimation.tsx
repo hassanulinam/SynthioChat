@@ -1,3 +1,5 @@
+import HumanSoulIcon from '../../Icons/HumanSoulIcon'
+
 import './ListenerAnimation.css'
 
 interface ListenerAnimationProps {
@@ -22,12 +24,9 @@ export function ListenerAnimation({ phase }: ListenerAnimationProps) {
       <span className="listener-animation-ring listener-animation-ring--outer" aria-hidden="true" />
       <span className="listener-animation-ring listener-animation-ring--middle" aria-hidden="true" />
       <span className="listener-animation-ring listener-animation-ring--inner" aria-hidden="true" />
-      <span
-        className="listener-animation-core icon-placeholder"
-        data-icon="listener"
-        aria-hidden="true"
-      />
-      {/* icon-placeholder: listener */}
+      <span className="listener-animation-core" aria-hidden="true">
+        <HumanSoulIcon fill="currentColor" size={36} />
+      </span>
       <p className="listener-animation-label">{getPhaseLabel(phase)}</p>
     </div>
   )

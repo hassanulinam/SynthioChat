@@ -15,12 +15,32 @@ function shouldSimulateChatFailure(content: string): boolean {
   return content.toLowerCase().includes('force error')
 }
 
+function sessionHasActivity(session: ChatSession): boolean {
+  return session.messages.length > 0
+}
+
+function matchesSearch(session: ChatSession, query: string): boolean {
+  const normalized = query.trim().toLowerCase()
+  if (!normalized) {
+    return true
+  }
+
+  if (session.title.toLowerCase().includes(normalized)) {
+    return true
+  }
+
+  return session.messages.some((message) =>
+    message.content.toLowerCase().includes(normalized),
+  )
+}
+
 export class ChatStore {
   sessions: ChatSession[] = []
   activeSessionId: string | null = null
   isLoading = false
   error: string | null = null
   composerText = ''
+  searchQuery = ''
   private lastFailedContent: string | null = null
   private persistenceEnabled = false
   private onComposerCleared: (() => void) | null = null
@@ -48,6 +68,22 @@ export class ChatStore {
     return this.sessions.length > 0
   }
 
+  get filteredSessions(): ChatSession[] {
+    return this.sessions.filter((session) => matchesSearch(session, this.searchQuery))
+  }
+
+  get pinnedSessions(): ChatSession[] {
+    return this.filteredSessions.filter((session) => session.isPinned)
+  }
+
+  get unpinnedSessions(): ChatSession[] {
+    return this.filteredSessions.filter((session) => !session.isPinned)
+  }
+
+  get hasSearchResults(): boolean {
+    return this.filteredSessions.length > 0
+  }
+
   initPersistence(): void {
     this.hydrateFromStorage()
     this.persistenceEnabled = true
@@ -57,7 +93,17 @@ export class ChatStore {
     this.composerText = text
   }
 
+  setSearchQuery(query: string): void {
+    this.searchQuery = query
+  }
+
+  clearSearch(): void {
+    this.searchQuery = ''
+  }
+
   createChat(): void {
+    this.pruneEmptySessions()
+
     const now = new Date()
     const session: ChatSession = {
       id: createId(),
@@ -65,6 +111,7 @@ export class ChatStore {
       createdAt: now,
       updatedAt: now,
       messages: [],
+      isPinned: false,
     }
 
     this.sessions = [session, ...this.sessions]
@@ -72,7 +119,7 @@ export class ChatStore {
     this.error = null
     this.lastFailedContent = null
     this.composerText = ''
-    this.persist()
+    // Empty chats are in-memory only until the first message.
   }
 
   switchChat(sessionId: string): void {
@@ -80,6 +127,7 @@ export class ChatStore {
       return
     }
 
+    this.pruneEmptySessions(sessionId)
     this.activeSessionId = sessionId
     this.error = null
     this.lastFailedContent = null
@@ -123,6 +171,18 @@ export class ChatStore {
       this.lastFailedContent = null
     }
 
+    this.persist()
+    return true
+  }
+
+  togglePinChat(sessionId: string): boolean {
+    const session = this.sessions.find((item) => item.id === sessionId)
+    if (!session) {
+      return false
+    }
+
+    session.isPinned = !session.isPinned
+    session.updatedAt = new Date()
     this.persist()
     return true
   }
@@ -230,21 +290,29 @@ export class ChatStore {
     }
   }
 
+  private pruneEmptySessions(keepSessionId?: string | null): void {
+    const keepId = keepSessionId ?? null
+    this.sessions = this.sessions.filter(
+      (session) => sessionHasActivity(session) || session.id === keepId,
+    )
+  }
+
   private hydrateFromStorage(): void {
     const sessions = readChatSessions(CHAT_SESSIONS_KEY)
     if (!sessions) {
       return
     }
 
+    // Drop any empty chats that may have been saved by older builds.
+    this.sessions = sessions.filter(sessionHasActivity)
     const activeSessionId = readStorage<string>(ACTIVE_SESSION_KEY)
-    this.sessions = sessions
     if (
       activeSessionId &&
-      sessions.some((session) => session.id === activeSessionId)
+      this.sessions.some((session) => session.id === activeSessionId)
     ) {
       this.activeSessionId = activeSessionId
     } else {
-      this.activeSessionId = sessions[0]?.id ?? null
+      this.activeSessionId = this.sessions[0]?.id ?? null
     }
     this.composerText = ''
   }
@@ -254,7 +322,15 @@ export class ChatStore {
       return
     }
 
-    writeStorage(CHAT_SESSIONS_KEY, this.sessions)
-    writeStorage(ACTIVE_SESSION_KEY, this.activeSessionId)
+    const sessionsToSave = this.sessions.filter(sessionHasActivity)
+    writeStorage(CHAT_SESSIONS_KEY, sessionsToSave)
+
+    const activeStillSaved = sessionsToSave.some(
+      (session) => session.id === this.activeSessionId,
+    )
+    writeStorage(
+      ACTIVE_SESSION_KEY,
+      activeStillSaved ? this.activeSessionId : (sessionsToSave[0]?.id ?? null),
+    )
   }
 }

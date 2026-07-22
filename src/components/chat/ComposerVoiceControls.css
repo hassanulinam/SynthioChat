@@ -27,18 +27,6 @@
   opacity: 0.45;
 }
 
-.composer-voice-btn .icon-placeholder {
-  opacity: 0.9;
-}
-
-.icon-placeholder--mic {
-  width: 0.9rem;
-  height: 1.05rem;
-  border-radius: 0.35rem 0.35rem 0.45rem 0.45rem;
-  border: 1.5px solid currentColor;
-  background: transparent;
-}
-
 .composer-voice-btn--mic-active {
   color: var(--accent);
 }
@@ -52,11 +40,6 @@
   pointer-events: none;
 }
 
-.composer-voice-btn--mic-active .icon-placeholder--mic {
-  background: var(--accent-muted);
-  border-color: var(--accent);
-}
-
 .composer-voice-btn--audio-chat {
   background: var(--audio-accent);
   color: #fff;
@@ -64,31 +47,6 @@
 
 .composer-voice-btn--audio-chat:hover:not(:disabled) {
   background: var(--audio-accent-hover);
-}
-
-.icon-placeholder--audio {
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  gap: 2px;
-  width: auto;
-  height: auto;
-  border: none;
-  border-radius: 0;
-  background: transparent;
-  opacity: 1;
-}
-
-.icon-placeholder--audio::before {
-  content: '';
-  display: block;
-  width: 0.18rem;
-  height: 0.55rem;
-  border-radius: 999px;
-  background: currentColor;
-  box-shadow:
-    0.3rem -0.15rem 0 currentColor,
-    0.6rem 0.05rem 0 currentColor;
 }
 
 @keyframes mic-pulse {

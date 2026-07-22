@@ -1,8 +1,12 @@
-import { IconButton } from '../common/IconButton'
+import { observer } from 'mobx-react'
+
+import CloseIcon from '../../Icons/CloseIcon'
 import { ThemeToggle } from '../common/ThemeToggle'
+import { useUiStore } from '../../stores/useStores'
 
 import { ChatList } from './ChatList'
 import { NewChatButton } from './NewChatButton'
+import { SidebarSearch } from './SidebarSearch'
 import './Sidebar.css'
 
 interface SidebarProps {
@@ -10,22 +14,21 @@ interface SidebarProps {
   onClose: () => void
 }
 
-export function Sidebar({ isOpen, onClose }: SidebarProps) {
+export const Sidebar = observer(function Sidebar({ isOpen, onClose }: SidebarProps) {
+  const uiStore = useUiStore()
+  const iconFill = uiStore.isDark ? '#ececec' : '#171717'
+
   const renderHeader = () => (
     <div className="sidebar-header">
       <p className="sidebar-brand">SynthioChat</p>
-      <IconButton
-        label="Close menu"
+      <button
+        type="button"
         className="sidebar-close"
+        aria-label="Collapse sidebar"
         onClick={onClose}
       >
-        <span
-          className="icon-placeholder"
-          data-icon="close"
-          aria-hidden="true"
-        />
-        {/* icon-placeholder: close */}
-      </IconButton>
+        <CloseIcon fill={iconFill} size={16} />
+      </button>
     </div>
   )
 
@@ -39,9 +42,11 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
       <aside
         className={`sidebar${isOpen ? ' sidebar--open' : ''}`}
         aria-label="Chat sidebar"
+        aria-hidden={!isOpen}
       >
         {renderHeader()}
         <div className="sidebar-actions">
+          <SidebarSearch />
           <NewChatButton />
         </div>
         <div className="sidebar-list">
@@ -53,4 +58,4 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
       </aside>
     </>
   )
-}
+})

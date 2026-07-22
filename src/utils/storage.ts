@@ -14,6 +14,7 @@ function reviveSession(raw: ChatSession): ChatSession {
     createdAt: toDate(raw.createdAt),
     updatedAt: toDate(raw.updatedAt),
     messages: Array.isArray(raw.messages) ? raw.messages.map(reviveMessage) : [],
+    isPinned: Boolean(raw.isPinned),
   }
 }
 

@@ -1,5 +1,7 @@
+import Markdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+
 import { formatTimestamp } from '../../utils/date'
-import { renderMarkdownToHtml } from '../../utils/markdown'
 import type { Message } from '../../types/chat.types'
 
 import './MessageBubble.css'
@@ -17,12 +19,9 @@ export function MessageBubble({ message }: MessageBubbleProps) {
     }
 
     return (
-      <div
-        className="message-bubble-content message-bubble-content--markdown"
-        dangerouslySetInnerHTML={{
-          __html: renderMarkdownToHtml(message.content),
-        }}
-      />
+      <div className="message-bubble-content message-bubble-content--markdown">
+        <Markdown remarkPlugins={[remarkGfm]}>{message.content}</Markdown>
+      </div>
     )
   }
 

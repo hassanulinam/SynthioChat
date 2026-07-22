@@ -1,6 +1,18 @@
-import { useState, type FormEvent, type KeyboardEvent, type MouseEvent } from 'react'
+import {
+  useEffect,
+  useRef,
+  useState,
+  type FormEvent,
+  type KeyboardEvent,
+  type MouseEvent,
+} from 'react'
 import { observer } from 'mobx-react'
 
+import EditPencilIcon from '../../Icons/EditPencilIcon'
+import MoreDotsIcon from '../../Icons/MoreDotsIcon'
+import PinIcon from '../../Icons/PinIcon'
+import TrashIcon from '../../Icons/TrashIcon'
+import UnpinIcon from '../../Icons/UnpinIcon'
 import type { ChatSession } from '../../types/chat.types'
 import { useChatStore, useUiStore } from '../../stores/useStores'
 
@@ -16,11 +28,29 @@ export const ChatItem = observer(function ChatItem({ session }: ChatItemProps) {
   const isActive = chatStore.activeSessionId === session.id
   const [isEditing, setIsEditing] = useState(false)
   const [draftTitle, setDraftTitle] = useState(session.title)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const menuRef = useRef<HTMLDivElement>(null)
+  const iconFill = uiStore.isDark ? '#ececec' : '#171717'
 
-  const beginRename = (event: MouseEvent) => {
-    event.stopPropagation()
+  useEffect(() => {
+    if (!isMenuOpen) {
+      return
+    }
+
+    const handlePointerDown = (event: PointerEvent) => {
+      if (!menuRef.current?.contains(event.target as Node)) {
+        setIsMenuOpen(false)
+      }
+    }
+
+    document.addEventListener('pointerdown', handlePointerDown)
+    return () => document.removeEventListener('pointerdown', handlePointerDown)
+  }, [isMenuOpen])
+
+  const beginRename = () => {
     setDraftTitle(session.title)
     setIsEditing(true)
+    setIsMenuOpen(false)
   }
 
   const commitRename = () => {
@@ -43,8 +73,8 @@ export const ChatItem = observer(function ChatItem({ session }: ChatItemProps) {
     }
   }
 
-  const handleDelete = (event: MouseEvent) => {
-    event.stopPropagation()
+  const handleDelete = () => {
+    setIsMenuOpen(false)
     const confirmed = window.confirm(`Delete “${session.title}”?`)
     if (!confirmed) {
       return
@@ -52,6 +82,14 @@ export const ChatItem = observer(function ChatItem({ session }: ChatItemProps) {
     const deleted = chatStore.deleteChat(session.id)
     if (deleted) {
       uiStore.showToast('Chat deleted')
+    }
+  }
+
+  const handleTogglePin = (event: MouseEvent) => {
+    event.stopPropagation()
+    const toggled = chatStore.togglePinChat(session.id)
+    if (toggled) {
+      uiStore.showToast(session.isPinned ? 'Chat pinned' : 'Chat unpinned')
     }
   }
 
@@ -82,34 +120,81 @@ export const ChatItem = observer(function ChatItem({ session }: ChatItemProps) {
   }
 
   return (
-    <div className={`chat-item-row${isActive ? ' chat-item-row--active' : ''}`}>
+    <div
+      className={`chat-item-row${isActive ? ' chat-item-row--active' : ''}${
+        isMenuOpen ? ' chat-item-row--menu-open' : ''
+      }`}
+    >
       <button
         type="button"
         className={`chat-item${isActive ? ' chat-item--active' : ''}`}
         onClick={() => chatStore.switchChat(session.id)}
         aria-current={isActive ? 'true' : undefined}
       >
+        {session.isPinned ? (
+          <span className="chat-item-pin-badge" aria-hidden="true">
+            <PinIcon fill={iconFill} size={12} />
+          </span>
+        ) : null}
         <span className="chat-item-title">{session.title}</span>
       </button>
-      <div className="chat-item-actions">
+
+      <div className="chat-item-actions" ref={menuRef}>
         <button
           type="button"
           className="chat-item-action"
-          aria-label={`Rename ${session.title}`}
-          onClick={beginRename}
+          aria-label={session.isPinned ? `Unpin ${session.title}` : `Pin ${session.title}`}
+          onClick={handleTogglePin}
         >
-          <span className="icon-placeholder" data-icon="rename" aria-hidden="true" />
-          {/* icon-placeholder: rename */}
+          {session.isPinned ? (
+            <UnpinIcon fill={iconFill} size={16} />
+          ) : (
+            <PinIcon fill={iconFill} size={16} />
+          )}
         </button>
+
         <button
           type="button"
           className="chat-item-action"
-          aria-label={`Delete ${session.title}`}
-          onClick={handleDelete}
+          aria-label={`More options for ${session.title}`}
+          aria-haspopup="menu"
+          aria-expanded={isMenuOpen}
+          onClick={(event) => {
+            event.stopPropagation()
+            setIsMenuOpen((open) => !open)
+          }}
         >
-          <span className="icon-placeholder" data-icon="delete" aria-hidden="true" />
-          {/* icon-placeholder: delete */}
+          <MoreDotsIcon fill={iconFill} size={16} />
         </button>
+
+        {isMenuOpen ? (
+          <div className="chat-item-menu" role="menu">
+            <button
+              type="button"
+              className="chat-item-menu-item"
+              role="menuitem"
+              onClick={(event) => {
+                event.stopPropagation()
+                beginRename()
+              }}
+            >
+              <EditPencilIcon fill={iconFill} size={16} />
+              Rename
+            </button>
+            <button
+              type="button"
+              className="chat-item-menu-item chat-item-menu-item--danger"
+              role="menuitem"
+              onClick={(event) => {
+                event.stopPropagation()
+                handleDelete()
+              }}
+            >
+              <TrashIcon fill="#b91c1c" size={16} />
+              Delete
+            </button>
+          </div>
+        ) : null}
       </div>
     </div>
   )

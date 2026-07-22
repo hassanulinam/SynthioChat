@@ -11,4 +11,5 @@ export interface ChatSession {
   createdAt: Date
   updatedAt: Date
   messages: Message[]
+  isPinned: boolean
 }

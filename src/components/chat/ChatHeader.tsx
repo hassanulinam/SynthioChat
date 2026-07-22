@@ -1,34 +1,34 @@
 import { observer } from 'mobx-react'
 
-import { useChatStore } from '../../stores/useStores'
+import ExpandRightIcon from '../../Icons/ExpandRightIcon'
+import { useChatStore, useUiStore } from '../../stores/useStores'
 
 import './ChatHeader.css'
 
 interface ChatHeaderProps {
-  onOpenSidebar?: () => void
+  isSidebarOpen: boolean
+  onExpandSidebar: () => void
 }
 
 export const ChatHeader = observer(function ChatHeader({
-  onOpenSidebar,
+  isSidebarOpen,
+  onExpandSidebar,
 }: ChatHeaderProps) {
   const chatStore = useChatStore()
+  const uiStore = useUiStore()
   const title = chatStore.activeSession?.title ?? 'SynthioChat'
+  const iconFill = uiStore.isDark ? '#f5f5f5' : '#171717'
 
   return (
     <header className="chat-header">
-      {onOpenSidebar ? (
+      {!isSidebarOpen ? (
         <button
           type="button"
-          className="chat-header-menu"
-          aria-label="Open menu"
-          onClick={onOpenSidebar}
+          className="chat-header-icon-btn"
+          aria-label="Expand sidebar"
+          onClick={onExpandSidebar}
         >
-          <span
-            className="icon-placeholder"
-            data-icon="menu"
-            aria-hidden="true"
-          />
-          {/* icon-placeholder: menu */}
+          <ExpandRightIcon fill={iconFill} size={18} />
         </button>
       ) : null}
       <h1 className="chat-header-title">{title}</h1>

@@ -1,5 +1,7 @@
 import { observer } from 'mobx-react'
 
+import AudioWaveIcon from '../../Icons/AudioWaveIcon'
+import MicIcon from '../../Icons/MicIcon'
 import { useChatStore, useVoiceStore } from '../../stores/useStores'
 
 import './ComposerVoiceControls.css'
@@ -26,12 +28,7 @@ export const ComposerVoiceControls = observer(function ComposerVoiceControls() {
         {voiceStore.isMicActive ? (
           <span className="composer-voice-btn-pulse" aria-hidden="true" />
         ) : null}
-        <span
-          className="icon-placeholder icon-placeholder--mic"
-          data-icon="mic"
-          aria-hidden="true"
-        />
-        {/* icon-placeholder: mic */}
+        <MicIcon fill="currentColor" size={18} />
       </button>
 
       <button
@@ -41,12 +38,7 @@ export const ComposerVoiceControls = observer(function ComposerVoiceControls() {
         disabled={audioChatDisabled}
         onClick={() => voiceStore.startAudioChat()}
       >
-        <span
-          className="icon-placeholder icon-placeholder--audio"
-          data-icon="audio-chat"
-          aria-hidden="true"
-        />
-        {/* icon-placeholder: audio-chat */}
+        <AudioWaveIcon fill="currentColor" size={18} />
       </button>
     </div>
   )

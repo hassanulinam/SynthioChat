@@ -1,11 +1,11 @@
 import { useState } from 'react'
 
-import { ChatWindow } from '../components/chat/ChatWindow'
+import { ChatWindow } from '../components/chat'
 import { Sidebar } from '../components/sidebar/Sidebar'
 import { AppLayout } from '../layouts/AppLayout'
 
 export function HomePage() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true)
 
   return (
     <AppLayout
@@ -15,7 +15,12 @@ export function HomePage() {
           onClose={() => setIsSidebarOpen(false)}
         />
       }
-      main={<ChatWindow onOpenSidebar={() => setIsSidebarOpen(true)} />}
+      main={
+        <ChatWindow
+          isSidebarOpen={isSidebarOpen}
+          onExpandSidebar={() => setIsSidebarOpen(true)}
+        />
+      }
     />
   )
 }
