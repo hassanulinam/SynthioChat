@@ -1,12 +1,21 @@
 .message-list {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1.25rem;
   flex: 1;
+  width: 100%;
   overflow-y: auto;
-  padding: 1rem 1.25rem;
+  padding: 1rem 1rem 1.5rem;
+}
+
+.message-list > .message-bubble,
+.message-list > .typing-indicator {
+  width: 100%;
+  max-width: var(--chat-max-width);
+  margin-inline: auto;
 }
 
 .message-list--empty {
   justify-content: center;
+  align-items: center;
 }

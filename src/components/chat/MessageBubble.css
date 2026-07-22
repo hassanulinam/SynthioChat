@@ -2,34 +2,38 @@
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
-  max-width: min(42rem, 85%);
-  padding: 0.75rem 0.875rem;
-  border-radius: 0.875rem;
+  max-width: 100%;
+  padding: 0.15rem 0;
 }
 
 .message-bubble--user {
   align-self: flex-end;
+  width: fit-content;
+  max-width: min(85%, 36rem);
+  margin-left: auto;
+  padding: 0.75rem 1rem;
+  border-radius: 1.25rem;
   background: var(--user-bubble);
   color: var(--user-bubble-text);
-  border-bottom-right-radius: 0.25rem;
 }
 
 .message-bubble--assistant {
-  align-self: flex-start;
-  background: var(--assistant-bubble);
+  align-self: stretch;
+  width: 100%;
   color: var(--assistant-bubble-text);
-  border-bottom-left-radius: 0.25rem;
 }
 
 .message-bubble-content {
   margin: 0;
   white-space: pre-wrap;
   word-break: break-word;
+  font-size: 1rem;
+  line-height: 1.65;
 }
 
 .message-bubble-time {
   font-size: 0.75rem;
-  opacity: 0.75;
+  opacity: 0.6;
 }
 
 .message-bubble--user .message-bubble-time {

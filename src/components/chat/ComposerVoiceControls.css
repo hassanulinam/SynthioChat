@@ -1,0 +1,107 @@
+.composer-voice-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+
+.composer-voice-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-h);
+}
+
+.composer-voice-btn:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.composer-voice-btn:disabled {
+  opacity: 0.45;
+}
+
+.composer-voice-btn .icon-placeholder {
+  opacity: 0.9;
+}
+
+.icon-placeholder--mic {
+  width: 0.9rem;
+  height: 1.05rem;
+  border-radius: 0.35rem 0.35rem 0.45rem 0.45rem;
+  border: 1.5px solid currentColor;
+  background: transparent;
+}
+
+.composer-voice-btn--mic-active {
+  color: var(--accent);
+}
+
+.composer-voice-btn-pulse {
+  position: absolute;
+  inset: -3px;
+  border: 2px solid var(--accent);
+  border-radius: 999px;
+  animation: mic-pulse 1.4s ease-out infinite;
+  pointer-events: none;
+}
+
+.composer-voice-btn--mic-active .icon-placeholder--mic {
+  background: var(--accent-muted);
+  border-color: var(--accent);
+}
+
+.composer-voice-btn--audio-chat {
+  background: var(--audio-accent);
+  color: #fff;
+}
+
+.composer-voice-btn--audio-chat:hover:not(:disabled) {
+  background: var(--audio-accent-hover);
+}
+
+.icon-placeholder--audio {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 2px;
+  width: auto;
+  height: auto;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  opacity: 1;
+}
+
+.icon-placeholder--audio::before {
+  content: '';
+  display: block;
+  width: 0.18rem;
+  height: 0.55rem;
+  border-radius: 999px;
+  background: currentColor;
+  box-shadow:
+    0.3rem -0.15rem 0 currentColor,
+    0.6rem 0.05rem 0 currentColor;
+}
+
+@keyframes mic-pulse {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.8;
+  }
+  70% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+}

@@ -97,10 +97,10 @@ export class ChatStore {
     this.persist()
   }
 
-  async sendMessage(content?: string): Promise<void> {
+  async sendMessage(content?: string): Promise<Message | null> {
     const trimmed = (content ?? this.composerText).trim()
     if (!trimmed || this.isLoading) {
-      return
+      return null
     }
 
     if (!this.activeSession) {
@@ -109,7 +109,7 @@ export class ChatStore {
 
     const session = this.activeSession
     if (!session) {
-      return
+      return null
     }
 
     const userMessage: Message = {
@@ -140,6 +140,7 @@ export class ChatStore {
         this.receiveMessage(assistantMessage)
         this.isLoading = false
       })
+      return assistantMessage
     } catch (err) {
       runInAction(() => {
         this.isLoading = false
@@ -149,6 +150,7 @@ export class ChatStore {
             ? err.message
             : 'Something went wrong. Please try again.'
       })
+      return null
     }
   }
 

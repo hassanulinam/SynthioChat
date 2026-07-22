@@ -1,0 +1,87 @@
+.listener-animation {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 12rem;
+  height: 12rem;
+}
+
+.listener-animation-ring {
+  position: absolute;
+  border-radius: 999px;
+  border: 2px solid var(--accent-muted);
+}
+
+.listener-animation-ring--outer {
+  width: 100%;
+  height: 100%;
+  animation: listener-ring 2.4s ease-out infinite;
+}
+
+.listener-animation-ring--middle {
+  width: 72%;
+  height: 72%;
+  animation: listener-ring 2.4s ease-out infinite 0.4s;
+}
+
+.listener-animation-ring--inner {
+  width: 44%;
+  height: 44%;
+  animation: listener-ring 2.4s ease-out infinite 0.8s;
+}
+
+.listener-animation-core {
+  position: relative;
+  z-index: 1;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 999px;
+  border: 2px solid var(--accent);
+  background: var(--accent-muted);
+}
+
+.listener-animation-label {
+  position: absolute;
+  bottom: -2rem;
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+
+.listener-animation--processing .listener-animation-ring,
+.listener-animation--speaking .listener-animation-ring {
+  animation-play-state: paused;
+  border-color: var(--accent);
+  opacity: 0.55;
+}
+
+.listener-animation--speaking .listener-animation-core {
+  animation: listener-speak 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes listener-ring {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.85;
+  }
+  70% {
+    transform: scale(1.05);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.05);
+    opacity: 0;
+  }
+}
+
+@keyframes listener-speak {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.08);
+  }
+}

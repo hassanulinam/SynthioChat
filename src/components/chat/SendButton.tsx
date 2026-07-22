@@ -1,13 +1,21 @@
-import { Button } from '../common/Button'
-
 interface SendButtonProps {
   disabled: boolean
 }
 
 export function SendButton({ disabled }: SendButtonProps) {
   return (
-    <Button type="submit" disabled={disabled} aria-label="Send message">
-      Send
-    </Button>
+    <button
+      type="submit"
+      className="composer-send-btn"
+      disabled={disabled}
+      aria-label="Send message"
+    >
+      <span
+        className="icon-placeholder icon-placeholder--send"
+        data-icon="send"
+        aria-hidden="true"
+      />
+      {/* icon-placeholder: send */}
+    </button>
   )
 }

@@ -28,7 +28,7 @@ export const MessageList = observer(function MessageList() {
   if (messages.length === 0 && !chatStore.isLoading) {
     return (
       <div className="message-list message-list--empty">
-        <EmptyState title="How can I help you today?" />
+        <EmptyState title="What's on the agenda today?" />
       </div>
     )
   }

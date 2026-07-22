@@ -1,7 +1,8 @@
 import { observer } from 'mobx-react'
 
 import { ErrorBanner } from '../common/ErrorBanner'
-import { useChatStore } from '../../stores/useStores'
+import { AudioChatOverlay } from '../voice/AudioChatOverlay'
+import { useChatStore, useVoiceStore } from '../../stores/useStores'
 
 import { ChatHeader } from './ChatHeader'
 import { MessageComposer } from './MessageComposer'
@@ -16,9 +17,11 @@ export const ChatWindow = observer(function ChatWindow({
   onOpenSidebar,
 }: ChatWindowProps) {
   const chatStore = useChatStore()
+  const voiceStore = useVoiceStore()
+  const isAudioChat = voiceStore.isAudioChatActive
 
   const renderError = () => {
-    if (!chatStore.error) {
+    if (!chatStore.error || isAudioChat) {
       return null
     }
 
@@ -39,8 +42,9 @@ export const ChatWindow = observer(function ChatWindow({
     <section className="chat-window" aria-label="Chat">
       <ChatHeader onOpenSidebar={onOpenSidebar} />
       {renderError()}
-      <MessageList />
-      <MessageComposer />
+      {!isAudioChat ? <MessageList /> : null}
+      <AudioChatOverlay />
+      {!isAudioChat ? <MessageComposer /> : null}
     </section>
   )
 })

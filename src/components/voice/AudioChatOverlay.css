@@ -1,0 +1,54 @@
+.audio-chat-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+.audio-chat-overlay-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: var(--chat-max-width);
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  text-align: center;
+}
+
+.audio-chat-overlay-hint {
+  margin: 0;
+  max-width: 22rem;
+  color: var(--text-muted);
+  font-size: 0.9375rem;
+}
+
+.audio-chat-overlay-draft {
+  margin: 0;
+  max-width: 28rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: var(--bg-elevated);
+  color: var(--text-h);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.audio-chat-overlay-footer {
+  display: flex;
+  justify-content: center;
+  padding: 1rem 1.5rem 1.5rem;
+  border-top: 1px solid var(--border);
+  background: var(--bg-elevated);
+}
+
+.audio-chat-overlay .error-banner {
+  max-width: 28rem;
+  width: 100%;
+}
