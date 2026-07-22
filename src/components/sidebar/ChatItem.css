@@ -1,0 +1,26 @@
+.chat-item {
+  display: block;
+  width: 100%;
+  padding: 0.625rem 0.75rem;
+  border: none;
+  border-radius: 0.5rem;
+  background: transparent;
+  color: var(--sidebar-text);
+  text-align: left;
+}
+
+.chat-item:hover {
+  background: var(--sidebar-active);
+}
+
+.chat-item--active {
+  background: var(--sidebar-active);
+}
+
+.chat-item-title {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.9375rem;
+}

@@ -4,37 +4,37 @@ overview: "Greenfield MVP on mvp-pro-v1: UI → MobX Stores → Services, browse
 todos:
   - id: phase-0-foundation
     content: "Phase 0: Create .cursor/memory.md, types, utils, constants, reset index.css"
-    status: pending
+    status: completed
   - id: phase-1-services
     content: "Phase 1: chat.service mock API + voice.service wrapping Web SpeechRecognition"
-    status: pending
+    status: completed
   - id: phase-2-stores
     content: "Phase 2: ChatStore (incl. composerText), VoiceStore→ChatStore wiring, StoreProvider"
-    status: pending
+    status: completed
   - id: phase-3-common
     content: "Phase 3: Build common UI (Button, ErrorBanner, EmptyState, Spinner, IconButton)"
-    status: pending
+    status: completed
   - id: phase-4-sidebar
     content: "Phase 4: Build Sidebar, ChatList, ChatItem, NewChatButton with session management"
-    status: pending
+    status: completed
   - id: phase-5-chat
     content: "Phase 5: Chat UI with controlled composerText (voice + keyboard share input)"
-    status: pending
+    status: completed
   - id: phase-6-voice
     content: "Phase 6: VoicePanel with real STT transcript, status, Start/End, errors"
-    status: pending
+    status: completed
   - id: phase-7-layout
     content: "Phase 7: AppLayout + HomePage + responsive mobile/tablet/desktop shell"
-    status: pending
+    status: completed
   - id: phase-8-errors
     content: "Phase 8: Error banners, mic/unsupported browser, retry, loading polish"
-    status: pending
+    status: completed
   - id: phase-9-persistence
     content: "Phase 9: localStorage persistence for chat sessions"
-    status: pending
+    status: completed
   - id: phase-10-qa
     content: "Phase 10: Full QA (incl. Chrome STT voice→chat), pnpm build + lint"
-    status: pending
+    status: completed
 isProject: false
 ---
 
@@ -45,6 +45,8 @@ isProject: false
 Branch: **`mvp-pro-v1`**. Stack in [`package.json`](package.json): React 19, MobX, Tailwind CSS 4, Vite 8, React Compiler. [`src/App.tsx`](src/App.tsx) is the Vite demo. No feature code or [`.cursor/memory.md`](.cursor/memory.md) yet.
 
 Do **not** add libraries. Do **not** introduce `useMemo` / `useCallback` / `React.memo`.
+
+Keep [`.cursor/plans/synthiochat_mvp_plan_30d517d5.plan.md`](.cursor/plans/synthiochat_mvp_plan_30d517d5.plan.md) in sync with this plan.
 
 ---
 
@@ -151,7 +153,7 @@ src/
   styles/                 only if needed later
 ```
 
-No `voiceDelays.ts` mock loop constants. Prefer keeping SpeechRecognition wrappers inside `voice.service.ts`.
+No `voiceDelays.ts` mock loop constants. Optional small `speech.ts` util only if SpeechRecognition typing helpers are shared (prefer keeping wrappers inside `voice.service.ts`).
 
 ---
 

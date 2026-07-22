@@ -1,0 +1,120 @@
+.sidebar-backdrop {
+  display: none;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 16rem;
+  min-width: 16rem;
+  height: 100%;
+  background: var(--sidebar-bg);
+  color: var(--sidebar-text);
+  border-right: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 1rem 1rem 0.5rem;
+}
+
+.sidebar-brand {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.sidebar-close {
+  display: none;
+  background: var(--sidebar-active);
+  border-color: transparent;
+  color: var(--sidebar-text);
+}
+
+.sidebar-actions {
+  padding: 0.5rem 0.75rem 0.75rem;
+}
+
+.sidebar-actions .new-chat-button,
+.sidebar-actions .ui-button--ghost {
+  width: 100%;
+  justify-content: flex-start;
+  background: var(--sidebar-active);
+  color: var(--sidebar-text);
+}
+
+.sidebar-actions .ui-button--ghost:hover:not(:disabled) {
+  background: #334155;
+}
+
+.sidebar-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 0.75rem 1rem;
+}
+
+.chat-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.sidebar-list .empty-state-title {
+  color: var(--sidebar-text);
+  font-size: 0.9375rem;
+}
+
+.sidebar-list .empty-state-description {
+  color: var(--sidebar-muted);
+}
+
+@media (max-width: 1023px) {
+  .sidebar {
+    width: 13.5rem;
+    min-width: 13.5rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .sidebar-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 30;
+    background: rgba(15, 23, 42, 0.45);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .sidebar-backdrop--open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 40;
+    width: min(18rem, 86vw);
+    min-width: 0;
+    transform: translateX(-105%);
+    transition: transform 0.2s ease;
+  }
+
+  .sidebar--open {
+    transform: translateX(0);
+  }
+
+  .sidebar-close {
+    display: inline-flex;
+  }
+}
