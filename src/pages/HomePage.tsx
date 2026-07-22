@@ -4,7 +4,7 @@ import {
   type PointerEvent as ReactPointerEvent,
 } from "react";
 
-import { ChatWindow } from "../components/chat";
+import { ChatWindow } from "../components/chat/ChatWindow";
 import { Sidebar } from "../components/sidebar/Sidebar";
 import { AppLayout } from "../layouts/AppLayout";
 
