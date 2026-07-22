@@ -22,6 +22,13 @@ export const ChatWindow = observer(function ChatWindow({
   const voiceStore = useVoiceStore()
   const isAudioChat = voiceStore.isAudioChatActive
 
+  const renderHeader = () => (
+    <ChatHeader
+      isSidebarOpen={isSidebarOpen}
+      onExpandSidebar={onExpandSidebar}
+    />
+  )
+
   const renderError = () => {
     if (!chatStore.error || isAudioChat) {
       return null
@@ -40,16 +47,29 @@ export const ChatWindow = observer(function ChatWindow({
     )
   }
 
+  const renderMessages = () => {
+    if (isAudioChat) {
+      return null
+    }
+
+    return <MessageList />
+  }
+
+  const renderComposer = () => {
+    if (isAudioChat) {
+      return null
+    }
+
+    return <MessageComposer />
+  }
+
   return (
     <section className="chat-window" aria-label="Chat">
-      <ChatHeader
-        isSidebarOpen={isSidebarOpen}
-        onExpandSidebar={onExpandSidebar}
-      />
+      {renderHeader()}
       {renderError()}
-      {!isAudioChat ? <MessageList /> : null}
+      {renderMessages()}
       <AudioChatOverlay />
-      {!isAudioChat ? <MessageComposer /> : null}
+      {renderComposer()}
     </section>
   )
 })

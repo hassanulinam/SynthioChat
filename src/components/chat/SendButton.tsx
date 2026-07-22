@@ -3,6 +3,14 @@ interface SendButtonProps {
 }
 
 export function SendButton({ disabled }: SendButtonProps) {
+  const renderIcon = () => (
+    <span
+      className="icon-placeholder icon-placeholder--send"
+      data-icon="send"
+      aria-hidden="true"
+    />
+  )
+
   return (
     <button
       type="submit"
@@ -10,11 +18,7 @@ export function SendButton({ disabled }: SendButtonProps) {
       disabled={disabled}
       aria-label="Send message"
     >
-      <span
-        className="icon-placeholder icon-placeholder--send"
-        data-icon="send"
-        aria-hidden="true"
-      />
+      {renderIcon()}
       {/* icon-placeholder: send */}
     </button>
   )

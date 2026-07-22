@@ -25,6 +25,12 @@ export function MessageBubble({ message }: MessageBubbleProps) {
     )
   }
 
+  const renderTimestamp = () => (
+    <time className="message-bubble-time" dateTime={message.createdAt.toISOString()}>
+      {formatTimestamp(message.createdAt)}
+    </time>
+  )
+
   return (
     <div
       className={`message-row${isUser ? ' message-row--user' : ' message-row--assistant'}`}
@@ -33,9 +39,7 @@ export function MessageBubble({ message }: MessageBubbleProps) {
         className={`message-bubble${isUser ? ' message-bubble--user' : ' message-bubble--assistant'}`}
       >
         {renderContent()}
-        <time className="message-bubble-time" dateTime={message.createdAt.toISOString()}>
-          {formatTimestamp(message.createdAt)}
-        </time>
+        {renderTimestamp()}
       </div>
     </div>
   )

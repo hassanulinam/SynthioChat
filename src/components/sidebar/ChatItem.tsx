@@ -93,30 +93,130 @@ export const ChatItem = observer(function ChatItem({ session }: ChatItemProps) {
     }
   }
 
-  if (isEditing) {
+  const renderRenameForm = () => (
+    <form
+      className="chat-item chat-item--editing"
+      onSubmit={(event: FormEvent) => {
+        event.preventDefault()
+        commitRename()
+      }}
+      onClick={(event) => event.stopPropagation()}
+    >
+      <label className="sr-only" htmlFor={`rename-${session.id}`}>
+        Rename chat
+      </label>
+      <input
+        id={`rename-${session.id}`}
+        className="chat-item-rename-input"
+        value={draftTitle}
+        autoFocus
+        onChange={(event) => setDraftTitle(event.target.value)}
+        onKeyDown={handleRenameKeyDown}
+        onBlur={commitRename}
+      />
+    </form>
+  )
+
+  const renderPinBadge = () => {
+    if (!session.isPinned) {
+      return null
+    }
+
     return (
-      <form
-        className="chat-item chat-item--editing"
-        onSubmit={(event: FormEvent) => {
-          event.preventDefault()
-          commitRename()
-        }}
-        onClick={(event) => event.stopPropagation()}
-      >
-        <label className="sr-only" htmlFor={`rename-${session.id}`}>
-          Rename chat
-        </label>
-        <input
-          id={`rename-${session.id}`}
-          className="chat-item-rename-input"
-          value={draftTitle}
-          autoFocus
-          onChange={(event) => setDraftTitle(event.target.value)}
-          onKeyDown={handleRenameKeyDown}
-          onBlur={commitRename}
-        />
-      </form>
+      <span className="chat-item-pin-badge" aria-hidden="true">
+        <PinIcon fill={iconFill} size={12} />
+      </span>
     )
+  }
+
+  const renderSessionButton = () => (
+    <button
+      type="button"
+      className={`chat-item${isActive ? ' chat-item--active' : ''}`}
+      onClick={() => chatStore.switchChat(session.id)}
+      aria-current={isActive ? 'true' : undefined}
+    >
+      {renderPinBadge()}
+      <span className="chat-item-title">{session.title}</span>
+    </button>
+  )
+
+  const renderPinButton = () => (
+    <button
+      type="button"
+      className="chat-item-action"
+      aria-label={session.isPinned ? `Unpin ${session.title}` : `Pin ${session.title}`}
+      onClick={handleTogglePin}
+    >
+      {session.isPinned ? (
+        <UnpinIcon fill={iconFill} size={16} />
+      ) : (
+        <PinIcon fill={iconFill} size={16} />
+      )}
+    </button>
+  )
+
+  const renderMoreButton = () => (
+    <button
+      type="button"
+      className="chat-item-action"
+      aria-label={`More options for ${session.title}`}
+      aria-haspopup="menu"
+      aria-expanded={isMenuOpen}
+      onClick={(event) => {
+        event.stopPropagation()
+        setIsMenuOpen((open) => !open)
+      }}
+    >
+      <MoreDotsIcon fill={iconFill} size={16} />
+    </button>
+  )
+
+  const renderMenu = () => {
+    if (!isMenuOpen) {
+      return null
+    }
+
+    return (
+      <div className="chat-item-menu" role="menu">
+        <button
+          type="button"
+          className="chat-item-menu-item"
+          role="menuitem"
+          onClick={(event) => {
+            event.stopPropagation()
+            beginRename()
+          }}
+        >
+          <EditPencilIcon fill={iconFill} size={16} />
+          Rename
+        </button>
+        <button
+          type="button"
+          className="chat-item-menu-item chat-item-menu-item--danger"
+          role="menuitem"
+          onClick={(event) => {
+            event.stopPropagation()
+            handleDelete()
+          }}
+        >
+          <TrashIcon fill="#b91c1c" size={16} />
+          Delete
+        </button>
+      </div>
+    )
+  }
+
+  const renderActions = () => (
+    <div className="chat-item-actions" ref={menuRef}>
+      {renderPinButton()}
+      {renderMoreButton()}
+      {renderMenu()}
+    </div>
+  )
+
+  if (isEditing) {
+    return renderRenameForm()
   }
 
   return (
@@ -125,77 +225,8 @@ export const ChatItem = observer(function ChatItem({ session }: ChatItemProps) {
         isMenuOpen ? ' chat-item-row--menu-open' : ''
       }`}
     >
-      <button
-        type="button"
-        className={`chat-item${isActive ? ' chat-item--active' : ''}`}
-        onClick={() => chatStore.switchChat(session.id)}
-        aria-current={isActive ? 'true' : undefined}
-      >
-        {session.isPinned ? (
-          <span className="chat-item-pin-badge" aria-hidden="true">
-            <PinIcon fill={iconFill} size={12} />
-          </span>
-        ) : null}
-        <span className="chat-item-title">{session.title}</span>
-      </button>
-
-      <div className="chat-item-actions" ref={menuRef}>
-        <button
-          type="button"
-          className="chat-item-action"
-          aria-label={session.isPinned ? `Unpin ${session.title}` : `Pin ${session.title}`}
-          onClick={handleTogglePin}
-        >
-          {session.isPinned ? (
-            <UnpinIcon fill={iconFill} size={16} />
-          ) : (
-            <PinIcon fill={iconFill} size={16} />
-          )}
-        </button>
-
-        <button
-          type="button"
-          className="chat-item-action"
-          aria-label={`More options for ${session.title}`}
-          aria-haspopup="menu"
-          aria-expanded={isMenuOpen}
-          onClick={(event) => {
-            event.stopPropagation()
-            setIsMenuOpen((open) => !open)
-          }}
-        >
-          <MoreDotsIcon fill={iconFill} size={16} />
-        </button>
-
-        {isMenuOpen ? (
-          <div className="chat-item-menu" role="menu">
-            <button
-              type="button"
-              className="chat-item-menu-item"
-              role="menuitem"
-              onClick={(event) => {
-                event.stopPropagation()
-                beginRename()
-              }}
-            >
-              <EditPencilIcon fill={iconFill} size={16} />
-              Rename
-            </button>
-            <button
-              type="button"
-              className="chat-item-menu-item chat-item-menu-item--danger"
-              role="menuitem"
-              onClick={(event) => {
-                event.stopPropagation()
-                handleDelete()
-              }}
-            >
-              <TrashIcon fill="#b91c1c" size={16} />
-              Delete
-            </button>
-          </div>
-        ) : null}
-      </div>
+      {renderSessionButton()}
+      {renderActions()}
     </div>
   )
 })

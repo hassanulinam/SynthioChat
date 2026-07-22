@@ -28,6 +28,14 @@ export const Sidebar = observer(function Sidebar({
   const uiStore = useUiStore()
   const iconFill = uiStore.isDark ? '#ececec' : '#171717'
 
+  const renderBackdrop = () => (
+    <div
+      className={`sidebar-backdrop${isOpen ? ' sidebar-backdrop--open' : ''}`}
+      onClick={onClose}
+      aria-hidden="true"
+    />
+  )
+
   const renderHeader = () => (
     <div className="sidebar-header">
       <p className="sidebar-brand">SynthioChat</p>
@@ -44,13 +52,44 @@ export const Sidebar = observer(function Sidebar({
     </div>
   )
 
+  const renderActions = () => (
+    <div className="sidebar-actions">
+      <SidebarSearch />
+      <NewChatButton />
+    </div>
+  )
+
+  const renderList = () => (
+    <div className="sidebar-list">
+      <ChatList />
+    </div>
+  )
+
+  const renderFooter = () => (
+    <div className="sidebar-footer">
+      <ThemeToggle />
+    </div>
+  )
+
+  const renderResizeHandle = () => {
+    if (!isOpen) {
+      return null
+    }
+
+    return (
+      <div
+        className="sidebar-resize-handle"
+        role="separator"
+        aria-orientation="vertical"
+        aria-label="Resize sidebar"
+        onPointerDown={onResizeStart}
+      />
+    )
+  }
+
   return (
     <>
-      <div
-        className={`sidebar-backdrop${isOpen ? ' sidebar-backdrop--open' : ''}`}
-        onClick={onClose}
-        aria-hidden="true"
-      />
+      {renderBackdrop()}
       <aside
         className={`sidebar${isOpen ? ' sidebar--open' : ''}${
           isResizing ? ' sidebar--resizing' : ''
@@ -64,25 +103,10 @@ export const Sidebar = observer(function Sidebar({
         }
       >
         {renderHeader()}
-        <div className="sidebar-actions">
-          <SidebarSearch />
-          <NewChatButton />
-        </div>
-        <div className="sidebar-list">
-          <ChatList />
-        </div>
-        <div className="sidebar-footer">
-          <ThemeToggle />
-        </div>
-        {isOpen ? (
-          <div
-            className="sidebar-resize-handle"
-            role="separator"
-            aria-orientation="vertical"
-            aria-label="Resize sidebar"
-            onPointerDown={onResizeStart}
-          />
-        ) : null}
+        {renderActions()}
+        {renderList()}
+        {renderFooter()}
+        {renderResizeHandle()}
       </aside>
     </>
   )

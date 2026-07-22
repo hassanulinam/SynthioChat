@@ -10,6 +10,13 @@ export const ThemeToggle = observer(function ThemeToggle() {
   const uiStore = useUiStore();
   const { isDark } = uiStore;
 
+  const renderIcon = () =>
+    isDark ? <SunIcon size={18} /> : <MoonIcon size={18} />;
+
+  const renderLabel = () => (
+    <span>{isDark ? "Light mode" : "Dark mode"}</span>
+  );
+
   return (
     <button
       type="button"
@@ -19,8 +26,8 @@ export const ThemeToggle = observer(function ThemeToggle() {
       }
       onClick={() => uiStore.toggleTheme()}
     >
-      {isDark ? <SunIcon size={18} /> : <MoonIcon size={18} />}
-      <span>{isDark ? "Light mode" : "Dark mode"}</span>
+      {renderIcon()}
+      {renderLabel()}
     </button>
   );
 });

@@ -11,12 +11,16 @@ export const ChatList = observer(function ChatList() {
   const chatStore = useChatStore()
   const hasQuery = chatStore.searchQuery.trim().length > 0
 
-  if (!chatStore.hasSessions) {
-    return <EmptyState title="Start a new conversation" />
-  }
+  const renderEmpty = () => {
+    if (!chatStore.hasSessions) {
+      return <EmptyState title="Start a new conversation" />
+    }
 
-  if (hasQuery && !chatStore.hasSearchResults) {
-    return <EmptyState title="No chats found" description="Try a different search." />
+    if (hasQuery && !chatStore.hasSearchResults) {
+      return <EmptyState title="No chats found" description="Try a different search." />
+    }
+
+    return null
   }
 
   const renderSection = (title: string, sessions: ChatSession[]) => {
@@ -36,6 +40,11 @@ export const ChatList = observer(function ChatList() {
         </ul>
       </section>
     )
+  }
+
+  const empty = renderEmpty()
+  if (empty) {
+    return empty
   }
 
   return (

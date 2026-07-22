@@ -19,22 +19,34 @@ export const ChatHeader = observer(function ChatHeader({
   const title = chatStore.activeSession?.title ?? 'SynthioChat'
   const iconFill = uiStore.isDark ? '#f5f5f5' : '#171717'
 
+  const renderExpandButton = () => {
+    if (isSidebarOpen) {
+      return null
+    }
+
+    return (
+      <button
+        type="button"
+        className="chat-header-icon-btn"
+        aria-label="Expand sidebar"
+        onClick={onExpandSidebar}
+      >
+        <ExpandRightIcon fill={iconFill} size={18} />
+      </button>
+    )
+  }
+
+  const renderBadge = () => (
+    <span className="chat-header-badge" aria-hidden="true">
+      SynthioChat
+    </span>
+  )
+
   return (
     <header className="chat-header">
-      {!isSidebarOpen ? (
-        <button
-          type="button"
-          className="chat-header-icon-btn"
-          aria-label="Expand sidebar"
-          onClick={onExpandSidebar}
-        >
-          <ExpandRightIcon fill={iconFill} size={18} />
-        </button>
-      ) : null}
+      {renderExpandButton()}
       <h1 className="chat-header-title">{title}</h1>
-      <span className="chat-header-badge" aria-hidden="true">
-        SynthioChat
-      </span>
+      {renderBadge()}
     </header>
   )
 })

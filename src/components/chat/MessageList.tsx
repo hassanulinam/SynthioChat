@@ -17,23 +17,13 @@ export const MessageList = observer(function MessageList() {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
   }, [messages.length, chatStore.isLoading])
 
-  if (!chatStore.activeSession) {
-    return (
-      <div className="message-list message-list--empty">
-        <EmptyState title="Start a new conversation" />
-      </div>
-    )
-  }
+  const renderEmpty = (title: string) => (
+    <div className="message-list message-list--empty">
+      <EmptyState title={title} />
+    </div>
+  )
 
-  if (messages.length === 0 && !chatStore.isLoading) {
-    return (
-      <div className="message-list message-list--empty">
-        <EmptyState title="What's on the agenda today?" />
-      </div>
-    )
-  }
-
-  return (
+  const renderMessages = () => (
     <div className="message-list" aria-live="polite">
       <div className="message-list-column">
         {messages.map((message) => (
@@ -44,4 +34,14 @@ export const MessageList = observer(function MessageList() {
       </div>
     </div>
   )
+
+  if (!chatStore.activeSession) {
+    return renderEmpty('Start a new conversation')
+  }
+
+  if (messages.length === 0 && !chatStore.isLoading) {
+    return renderEmpty("What's on the agenda today?")
+  }
+
+  return renderMessages()
 })

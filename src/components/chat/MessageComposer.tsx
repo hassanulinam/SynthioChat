@@ -59,39 +59,51 @@ export const MessageComposer = observer(function MessageComposer() {
     )
   }
 
+  const renderInput = () => (
+    <>
+      <label className="sr-only" htmlFor="message-input">
+        Message
+      </label>
+      <textarea
+        id="message-input"
+        ref={textareaRef}
+        className="message-composer-input"
+        rows={1}
+        placeholder={voiceStore.isMicActive ? 'Listening…' : 'Ask anything'}
+        value={chatStore.composerText}
+        onChange={(event) => {
+          const next = event.target.value
+          chatStore.setComposerText(next)
+          if (voiceStore.isMicActive) {
+            voiceStore.syncMicDraftFromComposer(next)
+          }
+        }}
+        onKeyDown={handleKeyDown}
+        disabled={chatStore.isLoading}
+      />
+    </>
+  )
+
+  const renderActions = () => (
+    <div className="message-composer-actions">
+      {canSend ? <SendButton disabled={!canSend} /> : null}
+      <ComposerVoiceControls />
+    </div>
+  )
+
+  const renderForm = () => (
+    <form className="message-composer" onSubmit={handleSubmit}>
+      <div className="message-composer-shell">
+        {renderInput()}
+        {renderActions()}
+      </div>
+    </form>
+  )
+
   return (
     <div className="message-composer-wrap">
       {renderVoiceError()}
-      <form className="message-composer" onSubmit={handleSubmit}>
-        <div className="message-composer-shell">
-          <label className="sr-only" htmlFor="message-input">
-            Message
-          </label>
-          <textarea
-            id="message-input"
-            ref={textareaRef}
-            className="message-composer-input"
-            rows={1}
-            placeholder={
-              voiceStore.isMicActive ? 'Listening…' : 'Ask anything'
-            }
-            value={chatStore.composerText}
-            onChange={(event) => {
-              const next = event.target.value
-              chatStore.setComposerText(next)
-              if (voiceStore.isMicActive) {
-                voiceStore.syncMicDraftFromComposer(next)
-              }
-            }}
-            onKeyDown={handleKeyDown}
-            disabled={chatStore.isLoading}
-          />
-          <div className="message-composer-actions">
-            {canSend ? <SendButton disabled={!canSend} /> : null}
-            <ComposerVoiceControls />
-          </div>
-        </div>
-      </form>
+      {renderForm()}
     </div>
   )
 })

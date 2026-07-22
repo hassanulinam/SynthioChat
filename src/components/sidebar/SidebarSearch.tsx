@@ -11,11 +11,14 @@ export const SidebarSearch = observer(function SidebarSearch() {
   const uiStore = useUiStore()
   const iconFill = uiStore.isDark ? '#a3a3a3' : '#737373'
 
-  return (
-    <div className="sidebar-search">
-      <span className="sidebar-search-icon" aria-hidden="true">
-        <SearchIcon fill={iconFill} size={16} />
-      </span>
+  const renderSearchIcon = () => (
+    <span className="sidebar-search-icon" aria-hidden="true">
+      <SearchIcon fill={iconFill} size={16} />
+    </span>
+  )
+
+  const renderInput = () => (
+    <>
       <label className="sr-only" htmlFor="sidebar-chat-search">
         Search chats
       </label>
@@ -27,16 +30,31 @@ export const SidebarSearch = observer(function SidebarSearch() {
         value={chatStore.searchQuery}
         onChange={(event) => chatStore.setSearchQuery(event.target.value)}
       />
-      {chatStore.searchQuery ? (
-        <button
-          type="button"
-          className="sidebar-search-clear"
-          aria-label="Clear search"
-          onClick={() => chatStore.clearSearch()}
-        >
-          <CloseIcon fill={iconFill} size={12} />
-        </button>
-      ) : null}
+    </>
+  )
+
+  const renderClearButton = () => {
+    if (!chatStore.searchQuery) {
+      return null
+    }
+
+    return (
+      <button
+        type="button"
+        className="sidebar-search-clear"
+        aria-label="Clear search"
+        onClick={() => chatStore.clearSearch()}
+      >
+        <CloseIcon fill={iconFill} size={12} />
+      </button>
+    )
+  }
+
+  return (
+    <div className="sidebar-search">
+      {renderSearchIcon()}
+      {renderInput()}
+      {renderClearButton()}
     </div>
   )
 })

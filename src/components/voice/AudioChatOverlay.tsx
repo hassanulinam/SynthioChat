@@ -15,6 +15,13 @@ export const AudioChatOverlay = observer(function AudioChatOverlay() {
     return null
   }
 
+  const renderHeader = () => (
+    <header className="audio-chat-panel-header">
+      <h2 className="audio-chat-panel-title">Audio chat</h2>
+      <p className="audio-chat-panel-subtitle">Hands-free conversation mode</p>
+    </header>
+  )
+
   const renderDraft = () => {
     const draft = voiceStore.audioChatDraft.trim()
     if (!draft) {
@@ -28,43 +35,52 @@ export const AudioChatOverlay = observer(function AudioChatOverlay() {
     return <p className="audio-chat-overlay-draft">{draft}</p>
   }
 
+  const renderErrors = () => (
+    <>
+      {voiceStore.error ? (
+        <ErrorBanner
+          message={voiceStore.error}
+          onDismiss={() => voiceStore.clearError()}
+        />
+      ) : null}
+      {chatStore.error ? (
+        <ErrorBanner
+          message={chatStore.error}
+          onRetry={() => {
+            void chatStore.retryLastMessage()
+          }}
+          onDismiss={() => chatStore.clearError()}
+        />
+      ) : null}
+    </>
+  )
+
+  const renderBody = () => (
+    <div className="audio-chat-panel-body">
+      <ListenerAnimation phase={voiceStore.audioChatPhase} />
+      {renderDraft()}
+      {renderErrors()}
+    </div>
+  )
+
+  const renderFooter = () => (
+    <footer className="audio-chat-panel-footer">
+      <Button
+        type="button"
+        variant="danger"
+        onClick={() => voiceStore.stopAudioChat()}
+      >
+        Stop audio chat
+      </Button>
+    </footer>
+  )
+
   return (
     <div className="audio-chat-overlay" aria-label="Audio chat">
       <div className="audio-chat-panel">
-        <header className="audio-chat-panel-header">
-          <h2 className="audio-chat-panel-title">Audio chat</h2>
-          <p className="audio-chat-panel-subtitle">Hands-free conversation mode</p>
-        </header>
-
-        <div className="audio-chat-panel-body">
-          <ListenerAnimation phase={voiceStore.audioChatPhase} />
-          {renderDraft()}
-          {voiceStore.error ? (
-            <ErrorBanner
-              message={voiceStore.error}
-              onDismiss={() => voiceStore.clearError()}
-            />
-          ) : null}
-          {chatStore.error ? (
-            <ErrorBanner
-              message={chatStore.error}
-              onRetry={() => {
-                void chatStore.retryLastMessage()
-              }}
-              onDismiss={() => chatStore.clearError()}
-            />
-          ) : null}
-        </div>
-
-        <footer className="audio-chat-panel-footer">
-          <Button
-            type="button"
-            variant="danger"
-            onClick={() => voiceStore.stopAudioChat()}
-          >
-            Stop audio chat
-          </Button>
-        </footer>
+        {renderHeader()}
+        {renderBody()}
+        {renderFooter()}
       </div>
     </div>
   )

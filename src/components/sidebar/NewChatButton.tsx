@@ -9,6 +9,8 @@ export const NewChatButton = observer(function NewChatButton() {
   const uiStore = useUiStore()
   const iconFill = uiStore.isDark ? '#ececec' : '#171717'
 
+  const renderIcon = () => <PlusIcon fill={iconFill} size={16} />
+
   return (
     <Button
       type="button"
@@ -19,7 +21,7 @@ export const NewChatButton = observer(function NewChatButton() {
         uiStore.showToast('New chat started')
       }}
     >
-      <PlusIcon fill={iconFill} size={16} />
+      {renderIcon()}
       New Chat
     </Button>
   )

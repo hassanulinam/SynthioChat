@@ -16,15 +16,18 @@ export function IconButton({
 }: IconButtonProps) {
   const classes = ['icon-button', className].filter(Boolean).join(' ')
 
+  const renderIcon = () =>
+    children ?? (
+      <span
+        className="icon-placeholder"
+        data-icon="generic"
+        aria-hidden="true"
+      />
+    )
+
   return (
     <button type={type} className={classes} aria-label={label} {...rest}>
-      {children ?? (
-        <span
-          className="icon-placeholder"
-          data-icon="generic"
-          aria-hidden="true"
-        />
-      )}
+      {renderIcon()}
       {/* icon-placeholder: generic */}
     </button>
   )
